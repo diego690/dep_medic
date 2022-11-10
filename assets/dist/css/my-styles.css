@@ -1,0 +1,446 @@
+.contenedor-p {
+  display: flex;
+  align-items: stretch;
+}
+
+.panel-menu {
+  width: 65%;
+  align-self: stretch;
+  padding: 5px 5px 5px 15px;
+}
+
+.row-fluid {
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 130px;
+  float: left;
+  height: 160px;
+  background: white;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  border-radius: 3px;
+}
+
+.icon:hover {
+  background: #999;
+  color: white;
+  cursor: pointer;
+}
+
+.icon:hover h4 {
+  color: white;
+}
+
+.icon .iconimage {
+  width: 100%;
+  text-align: center;
+}
+
+.icon .iconname {
+  font-weight: bold;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 10px;
+}
+
+.pd {
+  padding: 5px;
+}
+
+.icon .iconimage img {
+  height: 80px;
+}
+
+.icon .icondesc {
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.row.div-type-selector,
+.row.div-area-selector {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.row.div-type-selector h4,
+.row.div-area-selector h4,
+.row.div-datetime-selector h4 {
+  padding: 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #5d6986;
+}
+
+.row.div-type-selector div,
+.row.div-area-selector div {
+  display: flex;
+  justify-content: center;
+}
+
+.row.div-type-selector button,
+.row.div-area-selector button {
+  border: 3px solid #0176fe;
+  padding: 22px 15px 15px;
+  margin: 0 10px;
+  height: 85px;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 150ms ease-in-out;
+}
+
+.row.div-type-selector button:hover,
+.row.div-area-selector button:hover {
+  color: #fff;
+  border-color: #4d9ffe;
+  background-color: #4d9ffe;
+}
+
+.row.div-type-selector button.active,
+.row.div-area-selector button.active {
+  background-color: #0176fe;
+  color: #fff;
+}
+
+.row.div-datetime-selector {
+  display: flex;
+  flex-direction: column;
+}
+
+.div-date-selector {
+  align-self: center;
+  justify-content: center;
+  padding: 20px 10px 30px;
+  background-color: #f9fbfc;
+  border-radius: 3px;
+  width: auto;
+}
+
+.div-date-selector p {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.div-date-selector ul {
+  margin-top: 15px;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.div-date-selector li {
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.div-date-selector .weekday {
+  border: 3px solid #0176fe;
+  padding: 22px 15px 15px;
+  width: 86px;
+  height: 86px;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 150ms ease-in-out;
+}
+
+.div-date-selector .weekday:hover {
+  color: #fff;
+  border-color: #4d9ffe;
+  background-color: #4d9ffe;
+}
+
+.div-date-selector .weekday.selected {
+  background-color: #0176fe;
+  color: #fff;
+}
+
+.div-date-selector .weekday.disabled, .div-time-selector li.disabled {
+  color: #d9e3eb;
+  border-color: #d9e3eb;
+  cursor: not-allowed;
+}
+
+.div-date-selector .weekday.disabled:hover, .div-time-selector li.disabled:hover {
+  background-color: #fff;
+  color: #d9e3eb;
+  border-color: #d9e3eb;
+  cursor: not-allowed;
+}
+
+.div-date-selector .arrow {
+  color: #d9e3eb;
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.div-date-selector .arrow:hover {
+  color: #6f7d95;
+}
+
+.div-date-selector .arrow-right {
+  right: -12px;
+}
+
+.div-date-selector .arrow-left {
+  left: -12px;
+}
+
+.div-date-selector .weekday span {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.div-time-selector {
+  align-self: center;
+  list-style-type: none;
+  padding: 0;
+  width: auto;
+}
+
+.div-time-selector span {
+  font-style: italic;
+}
+
+.div-time-selector li {
+  cursor: pointer;
+  display: flex;
+  width: 300px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 3px solid #0176fe;
+  color: #6f7d95;
+  margin-bottom: 15px;
+  transition: all 150ms ease-in-out;
+}
+
+.div-time-selector li:hover {
+  color: #fff;
+  background-color: #0176fe;
+}
+
+#modalConfirmRequestAppointment ._request {
+  display: flex;
+}
+
+#modalConfirmRequestAppointment ._form-left {
+  width: 50%;
+  padding-right: 40px;
+  border-right: 2px solid #d9e3eb;
+}
+
+#modalConfirmRequestAppointment ._form-right {
+  width: 50%;
+  margin-left: 60px;
+  margin-right: 20px;
+}
+
+#modalConfirmRequestAppointment div.content-title {
+  display: flex;
+  align-items: center;
+  /*justify-content: space-between;*/
+  margin-bottom: 25px;
+  font-size: 16px;
+  color: #011429;
+  font-weight: 700;
+}
+
+#modalConfirmRequestAppointment .content-avatar-image {
+  display: inline-block;
+  border-radius: 50%;
+  min-width: 40px;
+  min-height: 40px;
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-position: center center;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+#modalConfirmRequestAppointment .content-avatar-image\--is-big {
+  min-width: 85px;
+  min-height: 85px;
+  width: 85px;
+  height: 85px;
+}
+
+#modalConfirmRequestAppointment div.content-title span.content-text {
+  margin-left: 15px;
+}
+
+#modalConfirmRequestAppointment ul.content-data {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#modalConfirmRequestAppointment ul.content-data li {
+  margin-bottom: 10px;
+  color: #7f95bb;
+}
+
+#modalConfirmRequestAppointment ul.content-data li > i {
+  margin-right: 10px;
+  width: 16px;
+}
+
+#modalConfirmRequestAppointment ul.content-data ._date {
+  color: #0176fe;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+._patient-data, .reason-data {
+  max-width: 390px;
+  margin-bottom: 20px;
+}
+
+._description {
+  text-align: justify;
+}
+
+.tui-full-calendar-timegrid-hour, .tui-full-calendar-timegrid-gridline {
+  min-height: 160px;
+}
+
+@media (max-width: 580px) {
+  .contenedor-p {
+    flex-direction: row-reverse;
+    flex-direction: column-reverse;
+  }
+
+  .panel-menu {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .div-date-selector .arrow-right {
+    right: -10px;
+  }
+
+  .div-date-selector .arrow-left {
+    left: -10px;
+  }
+
+  #modalConfirmRequestAppointment ._request {
+    flex-direction: column;
+  }
+
+  #modalConfirmRequestAppointment ._form-left {
+    width: 100%;
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  #modalConfirmRequestAppointment ._form-right {
+    width: 100%;
+    margin: 10px 0 0;
+  }
+}
+
+@media (min-width: 799px) and (max-width: 1100px) {
+  .panel-menu {
+    width: 100%;
+    padding-right: 1px;
+  }
+}
+
+@media (max-width: 800px) {
+  .contenedor-p {
+    flex-direction: row-reverse;
+    flex-direction: column-reverse;
+  }
+
+  .panel-menu {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .div-date-selector ul {
+    position: relative;
+    text-align: center;
+  }
+
+  .div-date-selector .weekday {
+    margin-bottom: 10px;
+  }
+
+  .div-date-selector .arrow {
+    position: absolute;
+    top: 30%;
+    font-size: 80px;
+  }
+
+  .div-date-selector {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1300px) {
+  .panel-menu {
+    width: 100%;
+    padding-right: 1px;
+  }
+}
+
+@media (min-width: 1299px) and (max-width: 1600px) {
+  .panel-menu {
+    width: 100%;
+    padding-right: 1px;
+  }
+}
+
+@media (min-width: 1299px) {
+  .panel-menu {
+    width: 100%;
+    padding-right: 1px;
+  }
+}
+
+/*  */
+.card .card-header.card-header-action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: space-between;
+}
+
+.card .card-action-wrap a {
+  color: #6f7a7f;
+  -webkit-transition: 0.2s ease;
+  -moz-transition: 0.2s ease;
+  transition: 0.2s ease;
+}
+
+.card .card-action-wrap a[data-toggle="collapse"] i, .card .card-action-wrap a[data-toggle="collapse"] span {
+  font-size: 24px;
+}
+
+.card .card-action-wrap a.collapsed span.mdi-chevron-up:before, .card .card-action-wrap a.collapsed i.mdi-chevron-up:before {
+  content: '\F0140';
+}
+
+.collapse:not(.show) {
+  display: none;
+}

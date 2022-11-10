@@ -1,0 +1,90 @@
+# Dep Médico
+#-------------------
+#Apache route handler
+
+Options -MultiViews -Indexes
+RewriteEngine on
+
+RewriteRule ^401/?$ 401.php [L,QSA,NC]
+RewriteRule ^500/?$ 500.php [L,QSA,NC]
+RewriteRule ^home/?$ views/home.php [L,QSA,NC]
+
+#Authentication & Profile Settings
+RewriteRule ^login$ views/login.php [L,QSA,NC]
+RewriteRule ^logout$ views/logout.php [L,QSA,NC]
+RewriteRule ^forgot-password$ views/forgot_password.php [L,QSA,NC]
+RewriteRule ^restore-password$ views/restore_password.php [L,QSA,NC]
+RewriteRule ^register$ views/register.php [L,QSA,NC]
+RewriteRule ^edit-profile$ views/edit_profile.php [L,QSA,NC]
+
+#Doctors, Employees and Students Accounts
+RewriteRule ^create-doctor$ views/create_doctor.php [L,QSA,NC]
+RewriteRule ^manage-doctors$ views/manage_doctors.php [L,QSA,NC]
+RewriteRule ^manage-employees$ views/manage_employees.php [L,QSA,NC]
+RewriteRule ^manage-students$ views/manage_students.php [L,QSA,NC]
+
+#Faculties
+RewriteRule ^create-faculty$ views/create_faculty.php [L,QSA,NC]
+RewriteRule ^manage-faculties$ views/manage_faculties.php [L,QSA,NC]
+RewriteRule ^faculties/edit/(.*)?$ views/edit_faculty.php?id=$1 [L,QSA,NC]
+
+#Careers
+RewriteRule ^create-career$ views/create_career.php [L,QSA,NC]
+RewriteRule ^manage-careers$ views/manage_careers.php [L,QSA,NC]
+RewriteRule ^careers/edit/(.*)?$ views/edit_career.php?id=$1 [L,QSA,NC]
+
+#Occupations
+RewriteRule ^create-occupation$ views/create_occupation.php [L,QSA,NC]
+RewriteRule ^manage-occupations$ views/manage_occupations.php [L,QSA,NC]
+RewriteRule ^occupations/edit/(.*)?$ views/edit_occupation.php?id=$1 [L,QSA,NC]
+
+#Request Familiar and Appointments
+RewriteRule ^request-familiar$ views/request_familiar.php [L,QSA,NC]
+RewriteRule ^manage-familiar-requests$ views/manage_familiar_requests.php [L,QSA,NC]
+RewriteRule ^request-appointment$ views/request_appointment.php [L,QSA,NC]
+RewriteRule ^manage-appointment-requests$ views/manage_appointment_requests.php [L,QSA,NC]
+
+#Patients
+RewriteRule ^create-patient$ views/create_patient.php [L,QSA,NC]
+RewriteRule ^manage-patients$ views/manage_patients.php [L,QSA,NC]
+
+#Appointments
+RewriteRule ^create-appointment$ views/create_appointment.php [L,QSA,NC]
+RewriteRule ^manage-appointments$ views/manage_appointments.php [L,QSA,NC]
+
+#Settings
+RewriteRule ^settings$ views/settings.php [L,QSA,NC]
+
+#Patient Attention
+RewriteRule ^patient-attention/(.*)?$ views/patient_attention.php?patient_id=$1 [L,QSA,NC]
+
+#Products
+RewriteRule ^create-product$ views/create_product.php [L,QSA,NC]
+RewriteRule ^manage-products$ views/manage_products.php [L,QSA,NC]
+RewriteRule ^products/edit/(.*)?$ views/edit_product.php?id=$1 [L,QSA,NC]
+
+#Audit
+RewriteRule ^audit-products$ views/audit_products.php [L,QSA,NC]
+
+#Nursing Data
+RewriteRule ^nursing-data/(.*)?$ views/nursing_data.php?patient_id=$1 [L,QSA,NC]
+#Medical History
+RewriteRule ^medical-history/(.*)?$ views/medical_history.php?patient_id=$1 [L,QSA,NC]
+#Medical Consultation
+RewriteRule ^medical-consultation/(.*)?$ views/medical_consultation.php?patient_id=$1 [L,QSA,NC]
+#Medical Evolve
+RewriteRule ^medical-evolve/(.*)?$ views/medical_evolve.php?patient_id=$1 [L,QSA,NC]
+#Medical Examn
+RewriteRule ^medical-exam/(.*)?$ views/medical_exams.php?patient_id=$1 [L,QSA,NC]
+#Recipe
+RewriteRule ^recipe/(.*)?$ views/recipe.php?patient_id=$1 [L,QSA,NC]
+
+#PDF
+RewriteRule ^pdf/(.*)/(.*)?$ views/load_data_pdf.php?module=$1&id=$2 [L,QSA,NC]
+
+#Files Protection
+<FilesMatch "(\.json|\.sql|\.ds)">
+Order allow,deny
+Deny from all
+Satisfy All
+</FilesMatch>

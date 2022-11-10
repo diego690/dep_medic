@@ -1,0 +1,15 @@
+{
+  "name": "@bryntum/calendar",
+  "version": "4.1.6",
+  "description": "Bryntum Calendar JavaScript component",
+  "author": {
+    "name": "Bryntum",
+    "url": "https://bryntum.com",
+    "email": "info@bryntum.com"
+  },
+  "homepage": "https://bryntum.com",
+  "license": "Commercial",
+  "devDependencies": {},
+  "main": "calendar.module.js",
+  "types": "./calendar.d.ts"
+}
