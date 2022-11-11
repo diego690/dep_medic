@@ -53,14 +53,14 @@ switch ($module) {
         $historyData = null;
         $patientData = null;
         if (!empty($moduleData)) {
-            $historyData = $doctorFunctions->getMedicalHistoryByID($moduleData->medicalhistory_id);
+            $historyData = $doctorFunctions->getMedicalHistoryByID($moduleData->medical_id);
             $patientData = $doctorFunctions->getPatientDataByID($historyData->person_id);
-            $moduleData = $doctorFunctions->getMedicalExamByDate($moduleData->medicalhistory_id, $moduleData->date);
+            $moduleData = $doctorFunctions->getMedicalExamByDate($moduleData->id, $moduleData->created_at);
             if ($moduleData->num_rows == 0) {
                 $moduleData = null;
             }
         }
-        _medicalExamenConsultation($patientData, $moduleData);
+        _medicalExam($patientData, $moduleData);
         break;
     case "recipe":
         $moduleData = $doctorFunctions->getRecipeByID($moduleDataID);
@@ -572,15 +572,15 @@ function _recipeData($pt, $dt, $mt)
     }
 }
 
-function _medicalExamenConsultation($pt, $ht, $dt)
+function _medicalExam($pt,$dt)
 {
-    if (empty($pt) || empty($ht) || empty($dt)) {
+    if (empty($pt) || empty($dt)) {
         header("Location: /" . BASE_URL . "home");
         exit();
     }
     global $doctorFunctions;
 
-    $pdf = readTemplate("../assets/formats/examens_required.pdf");
+    $pdf = readTemplate("../assets/formats/medical_evolve.pdf");
     $isGenerated = true;
     if (!empty($pdf)) {
         try {
@@ -589,8 +589,6 @@ function _medicalExamenConsultation($pt, $ht, $dt)
             $pdf->SetFontSize(9);
 
             //DATOS PACIENTE
-            $pdf->SetXY(29, 30);
-            $pdf->Write(0, date("d/m/Y H:i", strtotime($dt->created_at)));
             $career = "";
             if (!empty($pt->user_id)) {
                 $career = $doctorFunctions->getPatientTypeByUserID($pt->user_id);
@@ -600,88 +598,61 @@ function _medicalExamenConsultation($pt, $ht, $dt)
                     $career = str_replace("Estudiante - ", "", $career);
                 }
             }
-            $pdf->SetXY(124, 30);
-            $pdf->Write(0, utf8_decode($career));
+            $apellidos = explode(" ", $pt->last_name);
 
-            $pdf->SetXY(53, 36.8);
-            $pdf->Write(0, utf8_decode($pt->name . " " . $pt->last_name));
+            $limitBoxes = 29;
+            $countBoxes = 0;
+            $addPageBand = false;
+            do {
+                $countBoxes = 0;
+                if ($addPageBand) {
+                    $pdf->AddPage("P");
+                    $tplIdx = $pdf->importPage(1);
+                    $pdf->useTemplate($tplIdx, 0, 0, 210);
+                }
 
-            $pdf->SetXY(51, 43.7);
-            $pdf->Write(0, utf8_decode($pt->identification));
+                $pdf->SetFontSize(9);
+                $pdf->SetXY(125, 25.4);
+                $pdf->Write(0, utf8_decode($career));
 
-            $pdf->SetXY(117, 43.7);
-            $pdf->Write(0, utf8_decode(date_diff(date_create($pt->birth_date), date_create(date("Y-m-d")))->format("%y")));
+                $pdf->SetXY(16.8, 33.5);
+                $pdf->Write(0, utf8_decode($apellidos[0]));
+                $pdf->SetXY(61, 33.5);
+                $pdf->Write(0, (isset($apellidos[1])) ? utf8_decode($apellidos[1]) : "");
+                $pdf->SetXY(92.7, 33.5);
+                $pdf->Write(0, utf8_decode($pt->name));
+                $pdf->SetXY(149.6, 33.5);
+                $pdf->Write(0, $pt->identification);
 
-            $pdf->SetXY(51, 50.8);
-            $pdf->Write(0, utf8_decode(date("d/m/Y", strtotime($pt->birth_date))));
+                //DATOS Examen
 
-            $pdf->SetXY(128.5, 50.8);
-            $pdf->Write(0, utf8_decode($pt->civil_state));
+                $count = 0;
+                $pdf->SetFontSize(7);
+                while ($r = $dt->fetch_object()) {
+                    $countBoxes = $countBoxes + 1;
+                    $coordY = 7.5;
 
-            $pdf->SetXY(33, 57.7);
-            $pdf->Write(0, utf8_decode($pt->address));
+                    $pdf->SetMargins(17, 0);
+                    $pdf->SetXY(17, 53.3 + ($coordY * $count));
+                    $pdf->Write(0, date("d/m/Y", strtotime($r->fecha)));
 
-            $pdf->SetXY(55, 64.5);
-            $pdf->Write(0, utf8_decode($pt->phone));
+                    $pdf->SetMargins(39.1, 0, 81);
+                    $pdf->SetXY(39.1, 50.5 + ($coordY * $count));
+                    $pdf->Write(3, utf8_decode($r->exam));
 
-            //DATOS HISTORIAL
+                    $pdf->SetMargins(133.1, 0, 17);
+                    $pdf->SetXY(133.1, 50.5 + ($coordY * $count));
+                    $pdf->Write(3, utf8_decode($r->category));
 
-            $pdf->SetXY(23.6, 78);
-            $pdf->Write(0, utf8_decode($ht->app));
+                    $count = $count + 1;
+                    if ($countBoxes == $limitBoxes) {
+                        $addPageBand = true;
+                        break;
+                    }
+                }
+            } while ($countBoxes == $limitBoxes);
 
-            $pdf->SetXY(23.6, 84.8);
-            $pdf->Write(0, utf8_decode($ht->apf));
-
-            $pdf->SetXY(24.4, 91.7);
-            $pdf->Write(0, utf8_decode($ht->ago));
-
-            $pdf->SetXY(32.5, 98.6);
-            $pdf->Write(0, utf8_decode($ht->allergies));
-
-            $pdf->SetXY(121.2, 98.6);
-            $pdf->Write(0, utf8_decode($ht->habits));
-
-            $pdf->SetXY(21.8, 105.4);
-            $pdf->Write(0, utf8_decode($ht->pressure));
-
-            $pdf->SetXY(58.2, 105.4);
-            $pdf->Write(0, utf8_decode($ht->heart_frequency));
-
-            $pdf->SetXY(98.3, 105.4);
-            $pdf->Write(0, utf8_decode($ht->weight));
-
-            $pdf->SetXY(135.9, 105.4);
-            $pdf->Write(0, utf8_decode($ht->height));
-
-            $pdf->SetXY(168.1, 105.4);
-            $pdf->Write(0, utf8_decode($ht->imc));
-
-            //DATOS EXAMENS
-
-            $pdf->SetMargins(17, 0);
-            $pdf->SetXY(17, 119.6);
-            //$t = wordwrap(utf8_decode($dt->reason), 115);
-            $pdf->Write(3, utf8_decode($dt->reason));
-
-            $pdf->SetXY(45.2, 149.6);
-            $pdf->Write(3, utf8_decode($dt->head_neck));
-
-            $pdf->SetXY(63.8, 157.3);
-            $pdf->Write(3, utf8_decode($dt->thorax));
-
-            $pdf->SetXY(32.8, 164.6);
-            $pdf->Write(3, utf8_decode($dt->abdomen));
-
-            $pdf->SetXY(40.6, 172.5);
-            $pdf->Write(3, utf8_decode($dt->extremities));
-
-            $pdf->SetXY(54.6, 180.1);
-            $pdf->Write(3, utf8_decode($dt->diagnostic));
-
-            $pdf->SetXY(17, 191.5);
-            $pdf->Write(3, utf8_decode($dt->treatment));
-
-            $pdf->Output('I', 'Exámenes (Medicina) - ' . $pt->name . ' ' . $pt->last_name . '.pdf');
+            $pdf->Output('I', 'Examen (Medicina) - ' . $pt->name . ' ' . $pt->last_name . '.pdf');
         } catch (\Throwable $th) {
             $isGenerated = false;
         }

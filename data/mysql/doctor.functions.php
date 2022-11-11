@@ -312,6 +312,12 @@ class DoctorFunctions extends \Data\DataHelper
         $query = "select * from `medical_exams` WHERE `medicalhistory_id`=? " . $searchValue . " " . $orderBy . " " . $limitClause;
         return $this->executeResultQuery($query, ["s", $medicalHistoryID]);
     }
+    public function getMedicalExam2($medicalHistoryID, $searchValue, $orderBy = "", $limit = null, $offset = null)
+    {
+        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit " . $limit . "," . $offset;
+        $query = "select * from `examen_patients` WHERE `medical_id`=? " . $searchValue . " " . $orderBy . " " . $limitClause;
+        return $this->executeResultQuery($query, ["s", $medicalHistoryID]);
+    }
 
     public function getDentalHistory($personID, $searchValue, $orderBy = "", $limit = null, $offset = null)
     {
@@ -477,7 +483,7 @@ class DoctorFunctions extends \Data\DataHelper
     }
     public function getMedicalExamByID($id)
     {
-        $query = "select * from `medical_exams` where `id`=? limit 1;";
+        $query = "select * from `examen_patients` where `id`=? limit 1;";
         $result = $this->executeResultQuery($query, ['s', $id]);
         if ($result->num_rows > 0) {
             return $result->fetch_object();
@@ -493,7 +499,7 @@ class DoctorFunctions extends \Data\DataHelper
     }
     public function getMedicalExamByDate($medicalhistory_id, $date)
     {
-        $query = "select * from `medical_exams` where `medicalhistory_id`=? and `date`<=? order by `date` asc;";
+        $query = "select me.`id` as id, me.`created_at` as fecha, te.`type_exam` as exam, ce.`category` as category from `examen_patients` me inner join `details_exams` de on me.id=de.id_exam inner join `types_exam` te on de.id_type_exam=te.id inner join `category_exam` ce on te.`id_category`=ce.`id` where me.`id`=? and me.`created_at`<=? order by me.`created_at` asc;";
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
 
@@ -705,9 +711,18 @@ class DoctorFunctions extends \Data\DataHelper
 
     // MEDICAL EXAM
 
-    public function insertMedicalExam($historyID, $date, $exam_type)
+    public function insertMedicalExam($historyID, $date)
     {
-        $query = "call sp_insert_exams2('".$historyID."','".$date."','".$exam_type."');";
+        $query = "insert into `examen_patients`(`medical_id`,`created_at`) values (?,?);";
+        $params = array(
+            'ss', $historyID, $date
+        );
+        return $this->executeInsertQuery($query,$params);
+    }
+    public function insertDetailsExam($exam_type)
+    {
+        $query = "call sp_insert_details('".$exam_type."');";
+
         return $this->executeResultQuery($query,null);
     }
 }

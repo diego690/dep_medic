@@ -415,11 +415,11 @@ if ($is_post) {
                                                         <tbody>
                                                         <?php
                                                         if ($existsMedicalHistory) {
-                                                            $medicalExam = $doctorFunctions->getMedicalExam($medicalHistoryID, "", " order by `date` desc, `created_at` desc ");
+                                                            $medicalExam = $doctorFunctions->getMedicalExam2($medicalHistoryID, "", " order by `created_at` desc ");
                                                             while ($r = $medicalExam->fetch_object()) {
                                                                 ?>
                                                                 <tr>
-                                                                    <td><a href="/<?= BASE_URL ?>pdf/medical-exam/<?= urlencode(strrev(base64_encode($r->id))) ?>" data-rid="<?= $r->id ?>" target='_blank'><?= date("d/m/Y", strtotime($r->date)) ?></a></td>
+                                                                    <td><a href="/<?= BASE_URL ?>pdf/medical-exam/<?= urlencode(strrev(base64_encode($r->id))) ?>" data-rid="<?= $r->id ?>" target='_blank'><?= date("d/m/Y", strtotime($r->created_at)) ?></a></td>
                                                                 </tr>
                                                                 <?php
                                                             }

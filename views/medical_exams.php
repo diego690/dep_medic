@@ -43,12 +43,11 @@ if ($is_post) {
         $i = sizeof($_POST['select_exam']);
         //echo sizeof($_POST['select_exam']);
         //$user_id = $_POST['select_pacientesDoc'];
+        $result = $doctorFunctions->insertMedicalExam($historyID, $date);
+
         for($if = 0; $if < $i; $if++) {
-
-            echo $insertar[$if];
-            $result = $doctorFunctions->insertMedicalExam($historyID, $date, $insertar[$if]);
+            $result = $doctorFunctions->insertDetailsExam( $insertar[$if]);
             $isCreated=true;
-
         }
 
     /*$result = $doctorFunctions->insertMedicalEvolve($historyID, $date, $_POST["txt_evolve_notes"], $_POST["txt_prescription"]);*/
