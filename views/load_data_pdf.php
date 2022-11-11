@@ -62,6 +62,20 @@ switch ($module) {
         }
         _medicalExam($patientData, $moduleData);
         break;
+    case "medical-diagnosis":
+        $moduleData = $doctorFunctions->getMedicalDiagnosisByID($moduleDataID);
+        $historyData = null;
+        $patientData = null;
+        if (!empty($moduleData)) {
+            $historyData = $doctorFunctions->getMedicalHistoryByID($moduleData->medical_id);
+            $patientData = $doctorFunctions->getPatientDataByID($historyData->person_id);
+            $moduleData = $doctorFunctions->getMedicalDiagnosisByDate($moduleData->id, $moduleData->created_at);
+            if ($moduleData->num_rows == 0) {
+                $moduleData = null;
+            }
+        }
+        _medicalExam($patientData, $moduleData);
+        break;
     case "recipe":
         $moduleData = $doctorFunctions->getRecipeByID($moduleDataID);
         $detailsData = $doctorFunctions->getRecipeDetailsByID($moduleDataID);
@@ -580,7 +594,7 @@ function _medicalExam($pt,$dt)
     }
     global $doctorFunctions;
 
-    $pdf = readTemplate("../assets/formats/medical_evolve.pdf");
+    $pdf = readTemplate("../assets/formats/medical_exam.pdf");
     $isGenerated = true;
     if (!empty($pdf)) {
         try {
@@ -624,6 +638,10 @@ function _medicalExam($pt,$dt)
                 $pdf->SetXY(149.6, 33.5);
                 $pdf->Write(0, $pt->identification);
 
+
+
+
+
                 //DATOS Examen
 
                 $count = 0;
@@ -631,10 +649,12 @@ function _medicalExam($pt,$dt)
                 while ($r = $dt->fetch_object()) {
                     $countBoxes = $countBoxes + 1;
                     $coordY = 7.5;
-
+                    $pdf->SetXY(16.8, 41);
+                    $pdf->Write(0, "FECHA: ".date("d/m/Y", strtotime($r->fecha)));
                     $pdf->SetMargins(17, 0);
                     $pdf->SetXY(17, 53.3 + ($coordY * $count));
-                    $pdf->Write(0, date("d/m/Y", strtotime($r->fecha)));
+                    $num = $count+1;
+                    $pdf->Write(0, "".$num);
 
                     $pdf->SetMargins(39.1, 0, 81);
                     $pdf->SetXY(39.1, 50.5 + ($coordY * $count));
@@ -643,6 +663,102 @@ function _medicalExam($pt,$dt)
                     $pdf->SetMargins(133.1, 0, 17);
                     $pdf->SetXY(133.1, 50.5 + ($coordY * $count));
                     $pdf->Write(3, utf8_decode($r->category));
+
+                    $count = $count + 1;
+                    if ($countBoxes == $limitBoxes) {
+                        $addPageBand = true;
+                        break;
+                    }
+                }
+            } while ($countBoxes == $limitBoxes);
+
+
+            $pdf->Output('I', 'Examen (Medicina) - ' . $pt->name . ' ' . $pt->last_name . '.pdf');
+        } catch (\Throwable $th) {
+            $isGenerated = false;
+        }
+    } else {
+        $isGenerated = false;
+    }
+
+    if (!$isGenerated) {
+        echo "<center><h3>Error al generar archivo... Intente más tarde.</h3></center>";
+    }
+}
+
+function _medicalDiagnosis($pt,$dt)
+{
+    if (empty($pt) || empty($dt)) {
+        header("Location: /" . BASE_URL . "home");
+        exit();
+    }
+    global $doctorFunctions;
+
+    $pdf = readTemplate("../assets/formats/medical_diagnosis.pdf");
+    $isGenerated = true;
+    if (!empty($pdf)) {
+        try {
+            //$pdf->SetTextColor(255, 0, 0);
+            $pdf->SetFont("Helvetica");
+            $pdf->SetFontSize(9);
+
+            //DATOS PACIENTE
+            $career = "";
+            if (!empty($pt->user_id)) {
+                $career = $doctorFunctions->getPatientTypeByUserID($pt->user_id);
+                if (!str_contains($career, "Estudiante - ")) {
+                    $career = "";
+                } else {
+                    $career = str_replace("Estudiante - ", "", $career);
+                }
+            }
+            $apellidos = explode(" ", $pt->last_name);
+
+            $limitBoxes = 29;
+            $countBoxes = 0;
+            $addPageBand = false;
+            do {
+                $countBoxes = 0;
+                if ($addPageBand) {
+                    $pdf->AddPage("P");
+                    $tplIdx = $pdf->importPage(1);
+                    $pdf->useTemplate($tplIdx, 0, 0, 210);
+                }
+
+                $pdf->SetFontSize(9);
+                $pdf->SetXY(125, 25.4);
+                $pdf->Write(0, utf8_decode($career));
+
+                $pdf->SetXY(16.8, 33.5);
+                $pdf->Write(0, utf8_decode($apellidos[0]));
+                $pdf->SetXY(61, 33.5);
+                $pdf->Write(0, (isset($apellidos[1])) ? utf8_decode($apellidos[1]) : "");
+                $pdf->SetXY(92.7, 33.5);
+                $pdf->Write(0, utf8_decode($pt->name));
+                $pdf->SetXY(149.6, 33.5);
+                $pdf->Write(0, $pt->identification);
+
+
+                $pdf->SetXY(21.8, 43.5);
+                $pdf->Write(0, date("d/m/Y", strtotime($dt->fecha)));
+
+                //DATOS Examen
+
+                $count = 0;
+                $pdf->SetFontSize(7);
+                while ($r = $dt->fetch_object()) {
+                    $countBoxes = $countBoxes + 1;
+                    $coordY = 7.5;
+
+
+
+                    $pdf->SetMargins(39.1, 0, 81);
+                    $pdf->SetXY(39.1, 50.5 + ($coordY * $count));
+                    $pdf->Write(3, utf8_decode($r->description));
+
+                    $pdf->SetMargins(133.1, 0, 17);
+                    $pdf->SetXY(133.1, 50.5 + ($coordY * $count));
+                    $pdf->Write(3, utf8_decode($r->cie10));
 
                     $count = $count + 1;
                     if ($countBoxes == $limitBoxes) {

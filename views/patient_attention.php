@@ -432,6 +432,51 @@ if ($is_post) {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Diagnosticos -->
+                                <div class="card mb-3">
+                                    <div class="card-header card-header-action" style="padding: 12px 1.25rem;">
+                                        <h5 class="card-title mb-0">Diagnóstico Médico</h5>
+                                        <div class="d-flex align-items-center card-action-wrap">
+                                            <a class="inline-block collapsed me-2" data-toggle="collapse" href="#collapse_5" aria-expanded="false">
+                                                <i class="mdi mdi-chevron-up"></i>
+                                            </a>
+                                            <?php if ($existsMedicalHistory) { ?>
+                                                <a class="inline-block badge bg-success" data-toggle="tooltip" data-placement="top" title="Nuevo" style="color: white;" href="/<?= BASE_URL ?>medical-diagnosis/<?= $_GET["patient_id"] ?>">
+                                                    <i class="mdi mdi-24px mdi-plus-circle"></i>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div id="collapse_5" class="collapse">
+                                        <div class="card-body p-0">
+                                            <div class="table-wrap">
+                                                <div class="table-responsive">
+                                                    <table id="tb_m_module_5" class="table table-striped table-hover table-bordered table-sm mb-0">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Fecha</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <?php
+                                                        if ($existsMedicalHistory) {
+                                                            $medicalExam = $doctorFunctions->getMedicalDiagnosis($medicalHistoryID, "", " order by `created_at` desc ");
+                                                            while ($r = $medicalExam->fetch_object()) {
+                                                                ?>
+                                                                <tr>
+                                                                    <td><a href="/<?= BASE_URL ?>pdf/medical-diagnosis/<?= urlencode(strrev(base64_encode($r->id))) ?>" data-rid="<?= $r->id ?>" target='_blank'><?= date("d/m/Y", strtotime($r->created_at)) ?></a></td>
+                                                                </tr>
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <?php } ?>
                             <?php if ($_SESSION["dep_user_area"] == 3) {
                                 $existsDentalHistory = false;
@@ -686,6 +731,7 @@ if ($is_post) {
             var dt_m_module_2 = null;
             var dt_m_module_3 = null;
             var dt_m_module_4 = null;
+            var dt_m_module_4 = null;
         <?php } ?>
         <?php if ($_SESSION["dep_user_area"] == 3) { ?>
             var dt_o_module_1 = null;
@@ -769,6 +815,9 @@ if ($is_post) {
                 dt_m_module_3 = tb_m_module_3.DataTable(tbOptions);
                 var tb_m_module_4 = $('#tb_m_module_4');
                 dt_m_module_4 = tb_m_module_4.DataTable(tbOptions);
+                var tb_m_module_5 = $('#tb_m_module_5');
+                dt_m_module_5 = tb_m_module_5.DataTable(tbOptions);
+
             <?php } ?>
             <?php if ($_SESSION["dep_user_area"] == 3) { ?>
                 //MEDICINA
