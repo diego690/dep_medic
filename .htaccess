@@ -76,6 +76,8 @@ RewriteRule ^medical-consultation/(.*)?$ views/medical_consultation.php?patient_
 RewriteRule ^medical-evolve/(.*)?$ views/medical_evolve.php?patient_id=$1 [L,QSA,NC]
 #Medical Examn
 RewriteRule ^medical-exam/(.*)?$ views/medical_exams.php?patient_id=$1 [L,QSA,NC]
+#Medical Diagnosis
+RewriteRule ^medical-diagnosis/(.*)?$ views/medical_exams.php?patient_id=$1 [L,QSA,NC]
 #Recipe
 RewriteRule ^recipe/(.*)?$ views/recipe.php?patient_id=$1 [L,QSA,NC]
 
