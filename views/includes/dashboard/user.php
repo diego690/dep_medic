@@ -84,6 +84,19 @@ $userFunctions = new UsersFunctions();
                             </div>
                         </div>
                     </div>
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-recipe-requests';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/medicalrecipesicon.png" border="0">
+                            </div>
+                        </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Mis recetas</h4>
+                                <span class="icondesc">Recetas de citas medícas</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

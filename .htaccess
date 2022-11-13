@@ -43,6 +43,7 @@ RewriteRule ^request-familiar$ views/request_familiar.php [L,QSA,NC]
 RewriteRule ^manage-familiar-requests$ views/manage_familiar_requests.php [L,QSA,NC]
 RewriteRule ^request-appointment$ views/request_appointment.php [L,QSA,NC]
 RewriteRule ^manage-appointment-requests$ views/manage_appointment_requests.php [L,QSA,NC]
+RewriteRule ^manage-recipe-requests$ views/manage_recipe_request.php [L,QSA,NC]
 
 #Patients
 RewriteRule ^create-patient$ views/create_patient.php [L,QSA,NC]

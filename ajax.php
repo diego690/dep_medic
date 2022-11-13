@@ -787,6 +787,53 @@ if (isset($_POST["action"])) {
                 $result->error = "Error: No autorizado";
             }
             break;
+        case "get_my_recipe_requests":
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "US") {
+                //Read values
+                $draw = $_POST["draw"];
+                $row = $_POST["start"];
+                $rowperpage = $_POST["length"];
+                $columnIndex = (isset($_POST["order"])) ? $_POST["order"][0]["column"] : null;
+                $columnName = ($columnIndex != null) ? $_POST["columns"][$columnIndex]["data"] : "";
+                $columnSortOrder = (isset($_POST["order"])) ? $_POST["order"][0]["dir"] : "asc";
+                $searchValue = $_POST["search"]["value"];
+
+                //Search
+                $searchQuery = "";
+                if (trim($searchValue) != "") {
+                    $searchQuery = " and (P.`name` like '%" . $searchValue . "%' or P.`last_name` like '%" . $searchValue . "%' or A.`name` like '%" . $searchValue . "%') ";
+                }
+
+                // Total number of records without filtering
+                $totalRecords = $usFunctions->getMyRecipeRequests()->num_rows;
+
+                // Total number of records with filtering
+                
+
+                // Fetch records
+                $recipesdata= $usFunctions->getMyRecipeRequests();
+                $result_data = array();
+                while ($r = $recipesdata->fetch_object()) {
+                    $d = array(
+                        "date" => date("m/d/Y G:i:s", strtotime($r->date)),
+                        "product" => $r->product,
+                        "quantity" => $r->quantity,
+                        "indications" => $r->indications
+                    );
+                    $result_data[] = $d;
+                }
+
+                // Response
+                $result = array(
+                    "draw" => intval($draw),
+                    "iTotalRecords" => $totalRecords,
+                    "iTotalDisplayRecords" => $totalRecords,
+                    "aaData" => $result_data
+                );
+            } else {
+                $result->error = "Error: No autorizado";
+            }
+            break;
         case "delete_appointment_request":
             if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "US") {
                 if (isset($_POST["request_id"])) {
