@@ -748,4 +748,11 @@ class DoctorFunctions extends \Data\DataHelper
 
         return $this->executeResultQuery($query,null);
     }
+
+    public function getMedicines($searchValue, $orderBy = "", $limit = null, $offset = null)
+    {
+        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
+        $query ="SELECT M.id AS id,concat_ws(' ',M.nombre_local,M.forma,M.via)AS text,M.id AS qty FROM `medicines` AS M where ".$searchValue." ".$orderBy." ".$limitClause;
+        return $this->executeResultQuery($query, null);
+    }
 }
