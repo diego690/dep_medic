@@ -1715,6 +1715,64 @@ if (isset($_POST["action"])) {
                 $result->error = "Error: No autorizado";
             }
             break;
+        case "search_product2":
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR") {
+                //Read values
+                $searchValue = $_POST["q"];
+
+                //Search
+                $searchQuery = "";
+                if (trim($searchValue) != "") {
+                    $searchQuery = "`nombre_local` like '%". $searchValue ."%'";
+                }
+
+                // Fetch records
+                $products = $doctorFunctions->getMedicines($searchQuery, "", 0, 20);
+                $result_data = array();
+                while ($r = $products->fetch_object()) {
+                    $rData = array(
+                        "id" => $r->id,
+                        "text" => $r->text,
+                        "qty" => $r->qty
+                    );
+                    $result_data[] = $rData;
+                }
+
+                // Response
+                $result = $result_data;
+            } else {
+                $result->error = "Error: No autorizado";
+            }
+        break;
+        case "select_general":
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR") {
+                //Read values
+                $searchValue = $_POST["q"];
+
+                //Search
+                $searchQuery = "";
+                if (trim($searchValue) != "") {
+                    $searchQuery = " and (`name` like '%" . $searchValue . "%') ";
+                }
+
+                // Fetch records
+                $products = $doctorFunctions->getProducts($searchQuery, "", 0, 20);
+                $result_data = array();
+                while ($r = $products->fetch_object()) {
+                    $rData = array(
+                        "id" => $r->id,
+                        "text" => $r->name,
+                        "qty" => $r->units
+                    );
+                    $result_data[] = $rData;
+                }
+
+                // Response
+                $result = $result_data;
+            } else {
+                $result->error = "Error: No autorizado";
+            }
+            break;
     }
 }
 
