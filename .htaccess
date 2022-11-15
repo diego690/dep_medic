@@ -67,6 +67,8 @@ RewriteRule ^products/edit/(.*)?$ views/edit_product.php?id=$1 [L,QSA,NC]
 #Audit
 RewriteRule ^audit-products$ views/audit_products.php [L,QSA,NC]
 
+#Daily Records
+RewriteRule ^manage-daily-records$ views/manage_daily_records.php [L,QSA,NC]
 #Nursing Data
 RewriteRule ^nursing-data/(.*)?$ views/nursing_data.php?patient_id=$1 [L,QSA,NC]
 #Medical History
