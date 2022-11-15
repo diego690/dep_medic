@@ -130,9 +130,9 @@ if ($is_post) {
                             <i class="fas fa-fw fa-info"></i>
                         </div>
                         <div class="alert-message">
-                            <strong>Al registrar un paciente, deberá indicar si es un familiar o no:<br />
-                                <br />> Si es un familiar, seleccione de quién es.
-                                <br />> Si no es un familiar, llene los datos de la cuenta de usuario y especificar si es un estudiante o empleado.</strong>
+                            <strong>Al registrar un paciente, deberá indicar si es estudiante o empleado:<br />
+                                <br />> Si es un familiar, seleccione a quien pertenece. Nota: Solo familiares de empleados.</strong>
+                                
                         </div>
                     </div>
 

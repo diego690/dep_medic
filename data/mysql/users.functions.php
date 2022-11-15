@@ -229,7 +229,11 @@ class UsersFunctions extends \Data\DataHelper
     public function getEmployees($searchValue, $orderBy = "", $limit = null, $offset = null)
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
-        $query = "select U.`id`, U.`email`, U.`active`, P.`name`, P.`last_name`, O.`name` 'occupation', P.`identification` from `users` U inner join `persons` P on U.`person_id`=P.`id` inner join `user_occupation` UO on UO.`user_id`=U.`id` inner join `occupations` O on UO.`occupation_id`=O.`id` where U.`visible` = 1 and U.`role` = 'US' ".$searchValue." ".$orderBy." ".$limitClause;
+        $query = "select U.`id`, U.`email`, U.`active`, P.`name`, P.`last_name`, O.`name` 'occupation', "
+                . "P.`identification` from `users` U inner join `persons` P on U.`person_id`=P.`id` "
+                . "inner join `user_occupation` UO on UO.`user_id`=U.`id` inner join `occupations` "
+                . "O on UO.`occupation_id`=O.`id` where U.`visible` = 1 and U.`role` "
+                . "= 'US' ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
     }
 

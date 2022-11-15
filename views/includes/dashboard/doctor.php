@@ -12,11 +12,11 @@ $doctorFunctions = new DoctorFunctions();
                 <div class="row g-0 w-100">
                     <div class="col-6">
                         <div class="illustration-text p-3 m-1">
-                            <h2 class="illustration-text">Bienvenid@</h2>
+                            <h2 class="illustration-text">Bienvenid@ al área medíca</h2>
                         </div>
                     </div>
                     <div class="col-6 align-self-end text-end">
-                        <img src="/<?= BASE_URL ?>assets/dist/img/medicosicon.png" alt="" class="img-fluid illustration-img">
+                        <img src="/<?= BASE_URL ?>assets/dist/img/medicicon.png" alt="" class="img-fluid illustration-img">
                     </div>
                 </div>
             </div>
@@ -28,70 +28,66 @@ $doctorFunctions = new DoctorFunctions();
         <div class="row-fluid">
             <div class="row-fluid">
                 <div class="span12">
-                    <?php if ($_SESSION["dep_user_is_employee"] == true) { ?>
-                        <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>request-familiar';">
-                            <div class="iconimage">
-                                <div class="pd">
-                                    <img src="/<?= BASE_URL ?>assets/dist/img/opt_add_familiar.png" border="0">
-                                </div>
-                            </div>
-                            <div class="iconname">
-                                <div class="pd">
-                                    <h4 class="tituloicon">Añadir familiar</h4>
-                                    <span class="icondesc">Solicite el registro de un familiar</span>
-                                </div>
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-daily-records';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/daily-task.png" border="0">
                             </div>
                         </div>
-                        <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-familiar-requests';">
-                            <div class="iconimage">
-                                <div class="pd">
-                                    <img src="/<?= BASE_URL ?>assets/dist/img/opt_manage_familiar_requests.png" border="0">
-                                </div>
-                            </div>
-                            <div class="iconname">
-                                <div class="pd">
-                                    <h4 class="tituloicon">Mis familiares</h4>
-                                    <span class="icondesc">Solicitudes y familiares registrados</span>
-                                </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Registros diarios</h4>
                             </div>
                         </div>
+                    </div>
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-patient';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/medical-patient.png" border="0">
+                            </div>
+                        </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Registrar paciente</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-patients';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/medical-record.png" border="0">
+                            </div>
+                        </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Ver/ Atender pacientes</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if (in_array($_SESSION["dep_user_area"], [2, 3])) { ?>
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-appointment';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/opt_add_appointmentdr.png" border="0">
+                            </div>
+                        </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Registrar citas</h4>
+                                <span class="icondesc">Aceptar solicitudes</span>
+                            </div>
+                        </div>
+                    </div>
                     <?php } ?>
-                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>request-appointment';">
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-appointments';">
                         <div class="iconimage">
                             <div class="pd">
-                                <img src="/<?= BASE_URL ?>assets/dist/img/opt_add_appointment.png" border="0">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/schedule.png" border="0">
                             </div>
                         </div>
                         <div class="iconname">
                             <div class="pd">
-                                <h4 class="tituloicon">Agregar una cita</h4>
-                                <span class="icondesc">Solicite una cita para usted<?= ($_SESSION["dep_user_is_employee"] == true) ? " o su familiar" : "" ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-appointment-requests';">
-                        <div class="iconimage">
-                            <div class="pd">
-                                <img src="/<?= BASE_URL ?>assets/dist/img/opt_manage_appointment_requests.png" border="0">
-                            </div>
-                        </div>
-                        <div class="iconname">
-                            <div class="pd">
-                                <h4 class="tituloicon">Mis citas</h4>
-                                <span class="icondesc">Solicitudes y citas registradas</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-recipe-requests';">
-                        <div class="iconimage">
-                            <div class="pd">
-                                <img src="/<?= BASE_URL ?>assets/dist/img/medicalrecipesicon.png" border="0">
-                            </div>
-                        </div>
-                        <div class="iconname">
-                            <div class="pd">
-                                <h4 class="tituloicon">Mis recetas</h4>
-                                <span class="icondesc">Recetas de citas medícas</span>
+                                <h4 class="tituloicon">Ver citas</h4>
                             </div>
                         </div>
                     </div>

@@ -49,6 +49,26 @@ $msg_response = array(
                     <h1 class="h3 mb-3">Ver Pacientes</h1>
 
                     <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Listado de los pacientes</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table id="tb_patients" class="table table-striped table-hover table-bordered table-sm">
+                                        <!-- table-striped table-sm -->
+                                        <thead>
+                                            <tr>
+                                                <th>Cédula / Pasaporte</th>
+                                                <th>Nombres</th>
+                                                <th>Apellidos</th>
+                                                <th class="text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                         <?php if ($_SESSION["dep_user_area"] == 1) { ?>
                             <div class="col-12">
                                 <div class="card">
@@ -73,26 +93,7 @@ $msg_response = array(
                                 </div>
                             </div>
                         <?php } ?>
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0">Listado de los pacientes</h5>
-                                </div>
-                                <div class="card-body">
-                                    <table id="tb_patients" class="table table-striped table-hover table-bordered table-sm">
-                                        <!-- table-striped table-sm -->
-                                        <thead>
-                                            <tr>
-                                                <th>Cédula / Pasaporte</th>
-                                                <th>Nombres</th>
-                                                <th>Apellidos</th>
-                                                <th class="text-center">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
 
                 </div>
