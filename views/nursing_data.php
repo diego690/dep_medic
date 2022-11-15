@@ -76,16 +76,12 @@ if ($is_post) {
     <?php
     include_once("includes/styles.php");
     ?>
-
 </head>
-
 <body data-theme="colored" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="<?= SIDEBAR_TYPE ?>">
     <div class="wrapper">
-
         <?php
         include_once("includes/sidebar.php");
         ?>
-
         <div class="main">
 
             <?php
@@ -94,21 +90,18 @@ if ($is_post) {
 
             <main class="content">
                 <div class="container-fluid p-0">
-
                     <h1 class="h3 mb-3">Datos de Enfermería</h1>
-
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title mb-0">Registrar Datos</h5>
+                                    <h5 class="card-title mb-0">Registro de Datos</h5>
                                 </div>
                                 <div class="card-body">
                                     <form id="create_form" action="" method="post" novalidate="novalidate">
                                         <!-- To set an unique ID to this post form, to avoid duplicates -->
                                         <input type='hidden' name='post_id' value='<?= gen_uuid() ?>'>
                                         <!--  -->
-
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3 form-group">
@@ -126,7 +119,7 @@ if ($is_post) {
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="mb-3 form-group">
-                                                    <label for="txt_temperature" class="form-label">Temperatura <span style="color: red;">*</span></label>
+                                                    <label for="txt_temperature" class="form-label">Temperatura (C°) <span style="color: red;">*</span></label>
                                                     <input type="number" class="form-control" id="txt_temperature" name="txt_temperature" maxlength="20">
                                                 </div>
                                             </div>
