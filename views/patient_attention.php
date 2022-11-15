@@ -491,7 +491,7 @@ if ($is_post) {
                                             <a class="inline-block collapsed me-2" data-toggle="collapse" href="#collapse_1" aria-expanded="false">
                                                 <i class="mdi mdi-chevron-up"></i>
                                             </a>
-                                            <a class="inline-block badge bg-success" data-toggle="tooltip" data-placement="top" title="Editar" style="color: white;" href="javascript:;">
+                                            <a class="inline-block badge bg-success" data-toggle="tooltip" data-placement="top" title="Editar" style="color: white;" href="/<?= BASE_URL ?>medical-odontograma/<?= $_GET["patient_id"]?>">
                                                 <i class="mdi mdi-24px mdi-clipboard-edit-outline"></i>
                                             </a>
                                         </div>
