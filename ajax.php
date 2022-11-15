@@ -1459,7 +1459,13 @@ if (isset($_POST["action"])) {
                             }
                         }
                     } else {
-                        $result->error = "La cita no ha podido ser registrada.";
+                        if($res==-1)
+                        {
+                            $result->error = "La fecha u hora se encuentran fuera de los límites.";
+                        }
+                        else{
+                            $result->error = "La cita no ha podido ser registrada.";
+                        }
                     }
                 }
             } else {

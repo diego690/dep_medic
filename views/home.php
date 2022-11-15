@@ -57,7 +57,11 @@ $msg_response = array(
                         include_once("includes/dashboard/admin.php");
                     } else if ($_SESSION["dep_user_role"] == "US") {
                         include_once("includes/dashboard/user.php");
+                    } else if ($_SESSION["dep_user_role"] == "DR"){
+                        
+                        include_once("includes/dashboard/doctor.php");
                     }
+                        
                     ?>
 
                 </div>
