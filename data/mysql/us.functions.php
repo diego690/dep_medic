@@ -46,7 +46,7 @@ class UsFunctions extends \Data\DataHelper
 
     public function insertFamiliarRequest($requestID, $userID, $type, $kin, $personID = null)
     {
-        $query = "insert into `familiar_requests` (`id`, `user_id`, `type`, `kin`, `person_id`) values (?,?,?,?,?);";
+        $query = "insert into `familiar_requests` (`id`,`user_id`, `type`, `kin`, `person_id`) values (?,?,?,?,?);";
         $params = array(
             'sssss', $requestID, $userID, $type, $kin, $personID
         );
@@ -164,7 +164,7 @@ class UsFunctions extends \Data\DataHelper
         $duration = $this->executeResultQuery($query, ['s', $areaID])->fetch_object()->duration;
         $end_time = date("G:i:s", (strtotime($init_time) + $duration));
 
-        $query = "insert into `turn` (`id`, `area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `turn` (`area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (?,?,?,?,?,?,?,?,?);";
         $params = array(
             'sssssssss', $areaID, $personID, $date, $init_time, $end_time, $status, $type, $description, $_SESSION["dep_user_id"]
         );

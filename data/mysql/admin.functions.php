@@ -34,7 +34,7 @@ class AdminFunctions extends \Data\DataHelper
 
     public function createFaculty($name, $description)
     {
-        $query = "insert into `faculties` (`id`, `name`, `description`) values (UUID(),?,?);";
+        $query = "insert into `faculties` (`name`, `description`) values (?,?);";
         $params = array(
             'ss', $name, $description
         );
@@ -89,7 +89,7 @@ class AdminFunctions extends \Data\DataHelper
 
     public function createCareer($facultyID, $name, $description)
     {
-        $query = "insert into `careers` (`id`, `faculty_id`, `name`, `description`) values (UUID(),?,?,?);";
+        $query = "insert into `careers` (`faculty_id`, `name`, `description`) values (?,?,?);";
         $params = array(
             'sss', $facultyID, $name, $description
         );
@@ -144,7 +144,7 @@ class AdminFunctions extends \Data\DataHelper
 
     public function createOccupation($name, $description)
     {
-        $query = "insert into `occupations` (`id`, `name`, `description`) values (UUID(),?,?);";
+        $query = "insert into `occupations` (`name`, `description`) values (?,?);";
         $params = array(
             'ss', $name, $description
         );

@@ -22,7 +22,7 @@ class AuthFunctions extends \Data\DataHelper
 
     public function insertRestorePasswordCode($userID, $code)
     {
-        $query = "insert into `restore_pwd_codes` (`id`, `user_id`, `code`, `expires_at`) values (UUID(),?,?,CURRENT_TIMESTAMP() + INTERVAL 10 minute);";
+        $query = "insert into `restore_pwd_codes` (`user_id`, `code`, `expires_at`) values (?,?,CURRENT_TIMESTAMP() + INTERVAL 10 minute);";
         $params = array(
             'ss', $userID, $code
         );

@@ -168,9 +168,9 @@ class UsersFunctions extends \Data\DataHelper
 
     public function createPerson($id, $name, $last_name, $identification, $email, $phone, $birth_date, $civil_state, $address, $sex)
     {
-        $query = "insert into `persons` (`id`, `name`, `last_name`, `identification`, `email`, `phone`, `birth_date`, `civil_state`, `address`, `sex`) values (?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `persons` (`name`, `last_name`, `identification`, `email`, `phone`, `birth_date`, `civil_state`, `address`, `sex`) values (?,?,?,?,?,?,?,?,?);";
         $params = array(
-            'ssssssssss', $id, $name, $last_name, $identification, $email, $phone, $birth_date, $civil_state, $address, $sex
+            'sssssssss', $name, $last_name, $identification, $email, $phone, $birth_date, $civil_state, $address, $sex
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -179,9 +179,9 @@ class UsersFunctions extends \Data\DataHelper
     public function createUser($id, $personID, $username, $role, $pwd)
     {
         $pwd = $this->password_encrypt($pwd);
-        $query = "insert into `users` (`id`, `person_id`, `email`, `role`, `password`) values (?,?,?,?,?);";
+        $query = "insert into `users` (`person_id`, `email`, `role`, `password`) values (?,?,?,?);";
         $params = array(
-            'sssss', $id, $personID, $username, $role, $pwd
+            'ssss', $personID, $username, $role, $pwd
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -206,7 +206,9 @@ class UsersFunctions extends \Data\DataHelper
     public function getDoctors($searchValue, $orderBy = "", $limit = null, $offset = null)
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
-        $query = "select U.`id`, U.`email`, U.`active`, P.`name`, P.`last_name`, A.`name` 'area', A.`campus` from `users` U inner join `persons` P on U.`person_id`=P.`id` inner join `user_areas` UA on UA.`user_id`=U.`id` inner join `areas` A on UA.`area_id`=A.`id` where U.`visible` = 1 and U.`role` = 'DR' ".$searchValue." ".$orderBy." ".$limitClause;
+        $query = "select U.`id`, U.`email`, U.`active`, P.`name`, P.`last_name`, A.`name` 'area', A.`campus` from `users` U "
+                . "inner join `persons` P on U.`person_id`=P.`id` inner join `user_areas` UA on UA.`user_id`=U.`id` inner join "
+                . "`areas` A on UA.`area_id`=A.`id` where U.`visible` = 1 and U.`role` = 'DR' ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
     }
 

@@ -69,7 +69,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function createDoc($personID, $name, $url)
     {
-        $query = "insert into `docs` (`id`,`person_id`, `name`, `url_doc`) values (UUID(),?,?,?);";
+        $query = "insert into `docs` (`person_id`, `name`, `url_doc`) values (?,?,?);";
         $params = array(
             'sss', $personID, $name, $url
         );
@@ -181,7 +181,7 @@ class DoctorFunctions extends \Data\DataHelper
             if (in_array(date("N", (strtotime($date))), $days)) {
                 if ((strtotime($init_time) >= strtotime($hours_p->start) && strtotime($init_time) <= strtotime($hours_p->end)) || (strtotime($init_time) >= strtotime($hours_t->start) && strtotime($init_time) <= strtotime($hours_t->end))) {
                     if (!$this->existsConfirmedAppointmentWithSameDateTime($date, $init_time)) {
-                        $query = "insert into `turn` (`id`, `area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?);";
+                        $query = "insert into `turn` (`area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (?,?,?,?,?,?,?,?,?);";
                         $params = array(
                             'sssssssss', $areaID, $personID, $date, $init_time, $end_time, $status, $type, $description, $_SESSION["dep_user_id"]
                         );
@@ -358,7 +358,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertNursingData($turnID, $personID, $weight, $pressure, $temperature, $heartFrequency, $oxygen, $height, $breathingFrequency, $imc)
     {
-        $query = "insert into `nursing_data` (`id`, `turn_id`, `person_id`, `weight`, `pressure`,`temperature`,`heart_frequency`,`oxygen`,`height`,`breathing_frequency`,`imc`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `nursing_data` (`turn_id`, `person_id`, `weight`, `pressure`,`temperature`,`heart_frequency`,`oxygen`,`height`,`breathing_frequency`,`imc`,`created_by`) values (?,?,?,?,?,?,?,?,?,?,?);";
         $params = array(
             'ssdddddddds', $turnID, $personID, $weight, $pressure, $temperature, $heartFrequency, $oxygen, $height, $breathingFrequency, $imc, $_SESSION["dep_user_id"]
         );
@@ -425,7 +425,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalHistory($personID, $app, $apf, $ago, $allergies, $habits, $pressure, $heartFrequency, $weight, $height, $imc)
     {
-        $query = "insert into `medical_history` (`id`, `person_id`, `app`, `apf`, `ago`,`allergies`,`habits`,`pressure`,`heart_frequency`,`weight`,`height`,`imc`,`updated_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `medical_history` (`person_id`, `app`, `apf`, `ago`,`allergies`,`habits`,`pressure`,`heart_frequency`,`weight`,`height`,`imc`,`updated_by`) values (?,?,?,?,?,?,?,?,?,?,?,?);";
         $params = array(
             'ssssssddddds', $personID, $app, $apf, $ago, $allergies, $habits, $pressure, $heartFrequency, $weight, $height, $imc, $_SESSION["dep_user_id"]
         );
@@ -447,7 +447,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalConsultation($historyID, $turnID, $reason, $headNeck, $thorax, $abdomen, $extremities, $diagnostic, $treatment)
     {
-        $query = "insert into `medical_consultation` (`id`, `medicalhistory_id`,`turn_id`, `reason`, `head_neck`, `thorax`,`abdomen`,`extremities`,`diagnostic`,`treatment`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `medical_consultation` (`medicalhistory_id`,`turn_id`, `reason`, `head_neck`, `thorax`,`abdomen`,`extremities`,`diagnostic`,`treatment`,`created_by`) values (?,?,?,?,?,?,?,?,?,?);";
         $params = array(
             'ssssssssss', $historyID, $turnID, $reason, $headNeck, $thorax, $abdomen, $extremities, $diagnostic, $treatment, $_SESSION["dep_user_id"]
         );
@@ -470,7 +470,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalEvolve($historyID, $date, $evolve_notes, $prescription)
     {
-        $query = "insert into `medical_evolve` (`id`, `medicalhistory_id`,`date`, `evolve_notes`, `prescription`) values (UUID(),?,?,?,?);";
+        $query = "insert into `medical_evolve` (`medicalhistory_id`,`date`, `evolve_notes`, `prescription`) values (?,?,?,?);";
         $params = array(
             'ssss', $historyID, $date, $evolve_notes, $prescription
         );
@@ -530,9 +530,9 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertRecipe($id, $personID)
     {
-        $query = "insert into `recipes` (`id`, `person_id`, `created_by`) values (?,?,?);";
+        $query = "insert into `recipes` (`person_id`, `created_by`) values (?,?);";
         $params = array(
-            'sss', $id, $personID, $_SESSION["dep_user_id"]
+            'ss', $personID, $_SESSION["dep_user_id"]
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -540,7 +540,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertRecipeDetails($recipeID, $product, $quantity, $indications, $kit_quantity)
     {
-        $query = "insert into `recipe_details` (`id`, `recipe_id`, `product`, `quantity`, `indications`, `kit_quantity`) values (UUID(),?,?,?,?,?);";
+        $query = "insert into `recipe_details` (`recipe_id`, `product`, `quantity`, `indications`, `kit_quantity`) values (?,?,?,?,?);";
         $params = array(
             'ssisi', $recipeID, $product, $quantity, $indications, $kit_quantity
         );
@@ -589,9 +589,9 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function createProduct($id, $name, $image, $units, $description)
     {
-        $query = "insert into `products` (`id`, `name`, `image`, `units`, `description`) values (?,?,?,?,?);";
+        $query = "insert into `products` (`name`, `image`, `units`, `description`) values (?,?,?,?);";
         $params = array(
-            'sssis', $id, $name, $image, $units, $description
+            'ssis', $name, $image, $units, $description
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -754,5 +754,20 @@ class DoctorFunctions extends \Data\DataHelper
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
         $query ="SELECT M.id AS id,concat_ws(' ',M.nombre_local,M.forma,M.via)AS text,M.id AS qty FROM `medicines` AS M where ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
+    }
+    public function getDailyRecords($date)
+    {
+        $query ="SELECT dp.`created_at` 'date', CONCAT(pe.`name`, ' ', pe.`last_name`) 'names', pe.`identification` 'identification', 
+        IF((SELECT o.`description` from `users` u INNER JOIN  `user_occupation` uo ON uo.`user_id`=u.`id` inner join `occupations` o on uo.`occupation_id`=o.`id` 
+        where u.`person_id`=pe.`id` )!= '', (SELECT o.`description` from `users` u INNER JOIN  `user_occupation` uo ON uo.`user_id`=u.`id`  inner join `occupations` o on uo.`occupation_id`=o.`id` 
+        where u.`person_id`=pe.`id` ), 
+        if((SELECT u.`role`  FROM `users` u where u.`person_id`=pe.`id` ) != '', 'ESTUDIANTE', 'FAMILIAR' )) 'type_user', 
+        dp.`type_service` 'type_service', if(pe.`sex`=!'M', 'FEMENINO', 'MASCULINO') 'sex', 
+        YEAR(CURRENT_DATE)-YEAR(pe.`birth_date`) 'age', pe.`home_province` 'province', pd.`disability` 'disability', pe.`ethnicity` 'etnia', if(pe.country != 'ECUADOR', 'EXTRANJERO', 'ECUADOR') 'country', dd.`descripcion` 'diagnosis'
+        FROM `persons` pe inner join `medical_history` mh on pe.`id`=mh.`person_id` inner join `diagnosis_patient` dp on mh.`id` = dp.`medical_id` inner join `patient_disability` pd on pe.`id`=pd.`person_id` inner join `diagnosis` dd ON
+        dp.`diagnosis_id`=dd.`id`
+        WHERE dp.`created_at` <=? order by dp.`created_at` asc;";
+        
+        return $this->executeResultQuery($query, ['s', $date]);
     }
 }

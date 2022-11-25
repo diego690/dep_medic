@@ -36,7 +36,7 @@ $doctorFunctions = new DoctorFunctions();
                         </div>
                         <div class="iconname">
                             <div class="pd">
-                                <h4 class="tituloicon">Registros diarios</h4>
+                                <h4 class="tituloicon">Registros de pacientes</h4>
                             </div>
                         </div>
                     </div>
