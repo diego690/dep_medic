@@ -1834,7 +1834,7 @@ if (isset($_POST["action"])) {
                 //Search
                 $searchQuery = "";
                 if (trim($searchValue) != "") {
-                    $searchQuery = "`descripcion` like '%" . $searchValue . "%' or `clave` like '%" . $searchValue . "%' ";
+                    $searchQuery = "`clave` like '%" . $searchValue ."%'";
                 }
 
                 // Fetch records

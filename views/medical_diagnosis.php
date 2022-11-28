@@ -117,8 +117,8 @@ if ($is_post) {
                                     <div class="row">
                                         <div class="col-9">
                                             <div class="mb-3 form-group">
-                                                <label for="select_product" class="form-label">Diagnosticos CIE10 <span style="color: red;">*</span></label>
-                                                <select class="form-control" id="select_product" name="select_product" style="width: 100%;">
+                                                <label for="select_diagnosis" class="form-label">Diagnosticos CIE10 <span style="color: red;">*</span></label>
+                                                <select class="form-control" id="select_diagnosis" name="select_diagnosis" style="width: 100%;">
 
                                                 </select>
                                                 <small class="text-success"></small>
@@ -173,8 +173,8 @@ include_once("includes/scripts.php");
 <script>
     function clearComponents() {
 
-        $("#select_product").val("").trigger("change");
-        $("#select_product").parent().find("small").text("");
+        $("#select_diagnosis").val("").trigger("change");
+        $("#select_diagnosis").parent().find("small").text("");
     }
 
     function removeRow(obj) {
@@ -215,7 +215,7 @@ include_once("includes/scripts.php");
         ?>
 
         //init
-        $("#select_product").select2({
+        $("#select_diagnosis").select2({
             ajax: {
                 url: "/<?= BASE_URL ?>ajax.php",
                 method: "POST",
@@ -248,11 +248,11 @@ include_once("includes/scripts.php");
 
         //events
 
-        $("#select_product").on("select2:select", function (e) {
+        $("#select_diagnosis").on("select2:select", function (e) {
             let data = e.params.data;
-            $("#select_product option[value=" + data.id + "]").data('qty', data.qty);
-            $("#select_product").trigger('change');
-            $("#select_product").parent().find("small").text("Descripcion: " + data.qty);
+            $("#select_diagnosis option[value=" + data.id + "]").data('qty', data.qty+' ' +data.text);
+            $("#select_diagnosis").trigger('change');
+            $("#select_diagnosis").parent().find("small").text("Descripcion: " + data.qty);
         });
         $("#btn_clear").on("click", function () {
             clearComponents();
