@@ -1826,6 +1826,35 @@ if (isset($_POST["action"])) {
                 $result->error = "Error: No autorizado";
             }
             break;
+        case "search_diagnosis":
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR") {
+                //Read values
+                $searchValue = $_POST["q"];
+
+                //Search
+                $searchQuery = "";
+                if (trim($searchValue) != "") {
+                    $searchQuery = "`descripcion` like '%" . $searchValue . "%' or `clave` like '%" . $searchValue . "%' ";
+                }
+
+                // Fetch records
+                $products = $doctorFunctions->getDiagnosis($searchQuery, "", 0, 20);
+                $result_data = array();
+                while ($r = $products->fetch_object()) {
+                    $rData = array(
+                        "id" => $r->id,
+                        "text" => $r->text,
+                        "qty" => $r->qty
+                    );
+                    $result_data[] = $rData;
+                }
+
+                // Response
+                $result = $result_data;
+            } else {
+                $result->error = "Error: No autorizado";
+            }
+            break;
     }
 }
 

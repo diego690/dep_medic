@@ -82,7 +82,7 @@ RewriteRule ^medical-exam/(.*)?$ views/medical_exams.php?patient_id=$1 [L,QSA,NC
 #Medical Odontograma
 RewriteRule ^medical-odontograma/(.*)?$ views/manage_odonto.php?patient_id=$1 [L,QSA,NC]
 #Medical Diagnosis
-RewriteRule ^medical-diagnosis/(.*)?$ views/medical_exams.php?patient_id=$1 [L,QSA,NC]
+RewriteRule ^medical-diagnosis/(.*)?$ views/medical_diagnosis.php?patient_id=$1 [L,QSA,NC]
 #Recipe
 RewriteRule ^recipe/(.*)?$ views/recipe.php?patient_id=$1 [L,QSA,NC]
 

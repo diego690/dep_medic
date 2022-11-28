@@ -634,6 +634,12 @@ class DoctorFunctions extends \Data\DataHelper
         $query = "select * from `products` where `visible` = 1 ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
     }
+    public function getDiagnosis($searchValue, $orderBy = "", $limit = null, $offset = null)
+    {
+        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
+        $query = "select `id` as id,`clave` as text,`descripcion` as qty  from `diagnosis` where `visible` = 1 ".$searchValue." ".$orderBy." ".$limitClause;
+        return $this->executeResultQuery($query, null);
+    }
 
     public function deleteProductByID($productID)
     {
