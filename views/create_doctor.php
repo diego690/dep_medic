@@ -128,7 +128,7 @@ if ($is_post) {
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_identification" class="form-label">Cédula / Pasaporte <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="txt_identification" name="txt_identification">
+                                                    <input type="text" class="form-control" id="txt_identification" name="txt_identification" maxlength="10">
                                                     <small class="form-text d-block text-muted">Este campo se utilizará como contraseña, el usuario la podrá cambiar luego.</small>
                                                 </div>
                                             </div>
