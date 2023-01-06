@@ -594,7 +594,7 @@ function _medicalExam($pt,$dt)
     }
     global $doctorFunctions;
 
-    $pdf = readTemplate("../assets/formats/medical_exam.pdf");
+    $pdf = readTemplate("../assets/formats/Diagnosticos_examenes.pdf");
     $isGenerated = true;
     if (!empty($pdf)) {
         try {
@@ -626,17 +626,17 @@ function _medicalExam($pt,$dt)
                 }
 
                 $pdf->SetFontSize(9);
-                $pdf->SetXY(125, 25.4);
-                $pdf->Write(0, utf8_decode($career));
 
-                $pdf->SetXY(16.8, 33.5);
+                $pdf->SetXY(30.8, 30.5);
                 $pdf->Write(0, utf8_decode($apellidos[0]));
-                $pdf->SetXY(61, 33.5);
+                $pdf->SetXY(32, 30.5);
                 $pdf->Write(0, (isset($apellidos[1])) ? utf8_decode($apellidos[1]) : "");
-                $pdf->SetXY(92.7, 33.5);
+                $pdf->SetXY(44.7, 30.5);
                 $pdf->Write(0, utf8_decode($pt->name));
-                $pdf->SetXY(149.6, 33.5);
-                $pdf->Write(0, $pt->identification);
+                $pdf->SetXY(16.6, 20.5);
+                $pdf->Write(0,"Identificacion: ");
+                $pdf->SetXY(39.6, 20.5);
+                $pdf->Write(0,$pt->identification);
 
 
 
@@ -649,20 +649,20 @@ function _medicalExam($pt,$dt)
                 while ($r = $dt->fetch_object()) {
                     $countBoxes = $countBoxes + 1;
                     $coordY = 7.5;
-                    $pdf->SetXY(16.8, 41);
-                    $pdf->Write(0, "FECHA: ".date("d/m/Y", strtotime($r->fecha)));
+                    $pdf->SetXY(34.8, 26);
+                    $pdf->Write(0, "".date("d/m/Y", strtotime($r->fecha)));
                     $pdf->SetMargins(17, 0);
-                    $pdf->SetXY(17, 53.3 + ($coordY * $count));
+                    $pdf->SetXY(17, 40.3 + ($coordY * $count));
                     $num = $count+1;
                     $pdf->Write(0, "".$num);
 
-                    $pdf->SetMargins(39.1, 0, 81);
-                    $pdf->SetXY(39.1, 50.5 + ($coordY * $count));
-                    $pdf->Write(3, utf8_decode($r->exam));
+                    $pdf->SetMargins(17, 0);
+                    $pdf->SetXY(20, 40.3 + ($coordY * $count));
+                    $pdf->Write(0, utf8_decode($r->exam));
 
-                    $pdf->SetMargins(133.1, 0, 17);
-                    $pdf->SetXY(133.1, 50.5 + ($coordY * $count));
-                    $pdf->Write(3, utf8_decode($r->category));
+                    $pdf->SetMargins(17, 0);
+                    $pdf->SetXY(133.1, 40.3 + ($coordY * $count));
+                    $pdf->Write(0, utf8_decode($r->category));
 
                     $count = $count + 1;
                     if ($countBoxes == $limitBoxes) {

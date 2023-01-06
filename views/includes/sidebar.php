@@ -105,6 +105,11 @@ if (in_array($_SESSION["dep_user_role"], ["AD", "DR"])) {
                             <li id="mnu_products_manage" class="sidebar-item"><a class="sidebar-link" href="/<?= BASE_URL ?>manage-products">Ver Productos</a></li>
                         </ul>
                     </li>
+                    <li id="mnu_cie10" class="sidebar-item">
+                        <a class="sidebar-link" href="/<?= BASE_URL ?>cod_cie10">
+                            <i class="align-middle" data-feather="code"></i> <span class="align-middle">Codigo C I E 10</span>
+                        </a>
+                    </li>
                     <?php if (in_array($_SESSION["dep_user_area"], [2, 3])) { ?>
                         <li id="mnu_settings" class="sidebar-item">
                             <a class="sidebar-link" href="/<?= BASE_URL ?>settings">

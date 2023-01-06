@@ -28,26 +28,20 @@ $is_post = (count($_POST) > 0) && ($post_validation_session != $post_validation_
 
 if ($is_post) {
     $_SESSION['post_id'] = $_POST['post_id'];
-
     $isCreated = false;
     $uuid = gen_uuid();
-    $result = $doctorFunctions->insertRecipe($uuid, $patientID);
-    if ($result > 0) {
-        try {
-            $details = json_decode($_POST["recipe_details"]);
-            foreach ($details as $detail) {
-                $result = $doctorFunctions->insertRecipeDetails($uuid, $detail->product, $detail->quantity, $detail->indications, $detail->kit_quantity);
-                $doctorFunctions->decreaseProductStockByID($detail->product, $detail->kit_quantity);
-            }
+    $result = $doctorFunctions->insertDiagnosis($patientID);
+    if($result>0){
 
-            if ($result > 0) {
-                $isCreated = true;
-            } else {
-                $doctorFunctions->deleteRecipe($uuid);
+            $details = json_decode($_POST["diagnosis_details"]);
+            foreach ($details as $detail){
+
+                $result= $doctorFunctions->insertDiagnosisDetails($detail->quantity);
+               // print ($detail->quantity);
             }
-        } catch (\Throwable $th) {
-            $doctorFunctions->deleteRecipe($uuid);
-        }
+           if($result > 0){
+                $isCreated= true;
+            }
     }
 
     if ($isCreated) {
@@ -112,7 +106,8 @@ if ($is_post) {
                                     <!-- To set an unique ID to this post form, to avoid duplicates -->
                                     <input type='hidden' name='post_id' value='<?= gen_uuid() ?>'>
                                     <!--  -->
-                                    <input type='hidden' id="recipe_details" name='recipe_details' value=''>
+                                    <input type='hidden' id="diagnosis_details" name='diagnosis_details' value=''>
+
 
                                     <div class="row">
                                         <div class="col-9">
@@ -121,7 +116,7 @@ if ($is_post) {
                                                 <select class="form-control" id="select_diagnosis" name="select_diagnosis" style="width: 100%;">
 
                                                 </select>
-                                                <small class="text-success"></small>
+                                                <small id="cie10" class="text-success" style="font-size: 18px;"></small>
                                             </div>
                                         </div>
                                     </div>
@@ -138,8 +133,9 @@ if ($is_post) {
                                             <table id="tb_details" class="table">
                                                 <thead>
                                                 <tr>
-                                                    <th style="width: 30%;">CIE10</th>
-                                                    <th class="d-none d-md-table-cell" style="width: 40%">Diagnostico</th>
+                                                    <th class="d-none d-md-table-cell" style="width: 40%">ID</th>
+                                                    <th class="d-none d-md-table-cell">CIE10</th>
+
                                                     <th class="text-center">Acciones</th>
                                                 </tr>
                                                 </thead>
@@ -171,6 +167,7 @@ include_once("includes/scripts.php");
 ?>
 
 <script>
+    var codigo = "";
     function clearComponents() {
 
         $("#select_diagnosis").val("").trigger("change");
@@ -185,10 +182,9 @@ include_once("includes/scripts.php");
         let rowColor = "success";
         $("#tb_details tbody").append(`
                     <tr class="table-` + rowColor + `">
-                        <td><textarea style="display: none;">` + data.productID + `</textarea>` + data.product + `</td>
-                        <td class="d-none d-md-table-cell">` + data.indications + `</td>
                         <td class="text-center">` + data.quantity + `</td>
-                        <td class="text-center">` + data.kit_quantity + `</td>
+                        <td class="text-center">` + data.productID + `</td>
+
                         <td class="table-action">
                             <center><a href="javascript:;" class="text-danger" onclick="removeRow(this);"><i class="fa fa-trash"></i></a></center>
                         </td>
@@ -250,31 +246,26 @@ include_once("includes/scripts.php");
 
         $("#select_diagnosis").on("select2:select", function (e) {
             let data = e.params.data;
-            $("#select_diagnosis option[value=" + data.id + "]").data('qty', data.qty+' ' +data.text);
+
+            $("#select_diagnosis option[value=" + data.id + "]").data('text', data.text);
             $("#select_diagnosis").trigger('change');
-            $("#select_diagnosis").parent().find("small").text("Descripcion: " + data.qty);
+            $("#select_diagnosis").parent().find("small").text("Código CIE10: " + data.qty);
+           /* let details= {
+                product: (data.id),
+                productID: (data.qty),
+                quantity: (data.text)
+            };
+            addToTable(details);*/
         });
         $("#btn_clear").on("click", function () {
             clearComponents();
         });
+        ///abre
         $("#btn_add").on("click", function () {
             let details = {
-                type: $("#select_product_type").val(),
-                product: ($("#select_product_type").val() == "1") ? $("#select_product option:selected").text() : $.trim($("#select_product2 option:selected").text()),
-                productID: ($("#select_product_type").val() == "1") ? $("#select_product").val() : $.trim($("#select_product2 option:selected").text()),
-                quantity: ($("#txt_quantity").val() == "") ? 0 : parseInt($("#txt_quantity").val()),
-                kit_quantity: ($("#txt_kit_quantity").val() == "") ? 0 : parseInt($("#txt_kit_quantity").val()),
-                indications: $("#txt_indications").val()
+                productID:  $("#select_diagnosis option:selected").text(),
+                quantity:  $("#select_diagnosis").val()
             };
-            if (details.product == "" || details.indications == "") {
-                toastr.error("Ingrese todos los datos");
-                return false;
-            }
-            if (details.quantity < 1) {
-                toastr.error("La cantidad debe ser mayor a cero");
-                return false;
-            }
-
             let existsInTable = false;
             $("#tb_details tbody tr").each(function () {
                 let productID = $(this).find("textarea").val();
@@ -291,20 +282,19 @@ include_once("includes/scripts.php");
             addToTable(details);
             clearComponents();
         });
-
+        ///cierre
         $('#create_form').on("submit", function (e) {
-            if ($("#tb_details tbody tr").length > 0) {
-                let recipe_details = [];
+            if ($("#tb_details tbody tr").length >= 0) {
+                let diagnosis_details = [];
                 $("#tb_details tbody tr").each(function () {
                     let details = {
-                        product: $(this).find("textarea").val(),
-                        indications: $(this).children("td:eq(1)").text(),
-                        quantity: $(this).children("td:eq(2)").text(),
-                        kit_quantity: $(this).children("td:eq(3)").text()
+                        quantity:$(this).find("textarea").val(),
+                        productID: $(this).children("td:eq(1)").text()
+
                     }
-                    recipe_details.push(details);
+                    diagnosis_details.push(details);
                 });
-                $("#recipe_details").val(JSON.stringify(recipe_details));
+                $("#diagnosis_details").val(JSON.stringify(diagnosis_details));
             } else {
                 toastr.error("No ha ingresado nada en el detalle.");
             }

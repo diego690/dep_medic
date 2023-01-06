@@ -56,6 +56,9 @@ RewriteRule ^manage-appointments$ views/manage_appointments.php [L,QSA,NC]
 #Settings
 RewriteRule ^settings$ views/settings.php [L,QSA,NC]
 
+#cod cie10
+RewriteRule ^cod_cie10$ views/manage_cie10.php [L,QSA,NC]
+
 #Patient Attention
 RewriteRule ^patient-attention/(.*)?$ views/patient_attention.php?patient_id=$1 [L,QSA,NC]
 

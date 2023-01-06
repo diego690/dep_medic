@@ -128,7 +128,7 @@ if ($is_post) {
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_identification" class="form-label">Cédula / Pasaporte <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="txt_identification" name="txt_identification" maxlength="10">
+                                                    <input type="text" class="form-control" id="txt_identification" name="txt_identification" onkeypress="return soloNumeros(event)">
                                                     <small class="form-text d-block text-muted">Este campo se utilizará como contraseña, el usuario la podrá cambiar luego.</small>
                                                 </div>
                                             </div>
@@ -137,13 +137,13 @@ if ($is_post) {
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_name" class="form-label">Nombres <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="50">
+                                                    <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="50" onkeypress="return soloLetras(event)">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_lastname" class="form-label">Apellidos <span style="color: red;">*</span></label>
-                                                    <input type="text" class="form-control" id="txt_lastname" name="txt_lastname" maxlength="50">
+                                                    <input type="text" class="form-control" id="txt_lastname" name="txt_lastname" maxlength="50" onkeypress="return soloLetras(event)">
                                                 </div>
                                             </div>
                                         </div>
@@ -181,7 +181,7 @@ if ($is_post) {
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_phone" class="form-label">Celular</label>
-                                                    <input type="text" class="form-control" id="txt_phone" name="txt_phone" data-mask="0000000000">
+                                                    <input type="text" class="form-control" id="txt_phone" name="txt_phone" data-mask="0000000000" onkeypress="return soloNumeros(event)">
                                                 </div>
                                             </div>
                                             <div class="col-12 col-md-6">
@@ -243,7 +243,9 @@ if ($is_post) {
                 $(this).tooltip('show');
             });
 
-            <?php if (count($msg_response["errors"])) {
+
+
+        <?php if (count($msg_response["errors"])) {
                 foreach ($msg_response["errors"] as $error) {
                     echo "toastr.error('{$error}');";
                 }

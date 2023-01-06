@@ -1834,11 +1834,11 @@ if (isset($_POST["action"])) {
                 //Search
                 $searchQuery = "";
                 if (trim($searchValue) != "") {
-                    $searchQuery = "`clave` like '%" . $searchValue ."%'";
+                    $searchQuery = "`clave` like '%". $searchValue ."%' OR `descripcion` like '%". $searchValue ."%'";
                 }
 
                 // Fetch records
-                $products = $doctorFunctions->getDiagnosis($searchQuery, "", 0, 20);
+                $products = $doctorFunctions->getDiagnosis($searchQuery, "", 0, 100);
                 $result_data = array();
                 while ($r = $products->fetch_object()) {
                     $rData = array(

@@ -525,6 +525,21 @@ class DoctorFunctions extends \Data\DataHelper
         $query = "select dp.`id` as id, dp.`created_at` as fecha, d.`descripcion` as description, d.`clave` as cie10 from `diagnosis_patient` dp inner join `details_diagnosis` dd on dp.`id` = dd.`diagnosis_patient_id` inner join `diagnosis` d on dd.`diagnosis_id` = d.`id` where dp.`id`=? and dp.`created_at`<=? order by dp.`created_at` asc;";
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
+    //DIAGNOSIS
+    public function insertDiagnosis($personID){
+        $query = "insert into `diagnosis_patient` (`medical_id`,`created_by`) values (?,?);";
+        $params = array('ss',$personID,$_SESSION["dep_user_id"]);
+        return $this->executeInsertQuery($query,$params);
+    }
+    public function insertDiagnosisDetails($diag_patient_id){
+       $query = "call sp_insert_detail_diagnosis('".$diag_patient_id."');";
+        return $this->executeResultQuery($query,null);
+    }
+
+    public function getNumDiagnosis(){
+        $query= "select count(*) from `diagnosis_patient`;";
+        return $this->executeResultQuery($query,null);
+    }
 
     // RECIPE
 
@@ -632,12 +647,6 @@ class DoctorFunctions extends \Data\DataHelper
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
         $query = "select * from `products` where `visible` = 1 ".$searchValue." ".$orderBy." ".$limitClause;
-        return $this->executeResultQuery($query, null);
-    }
-    public function getDiagnosis($searchValue, $orderBy = "", $limit = null, $offset = null)
-    {
-        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
-        $query = "select `id` as id,`clave` as text,`descripcion` as qty  from `diagnosis` where `visible` = 1 ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
     }
 
@@ -759,6 +768,13 @@ class DoctorFunctions extends \Data\DataHelper
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
         $query ="SELECT M.id AS id,concat_ws(' ',M.nombre_local,M.forma,M.via)AS text,M.id AS qty FROM `medicines` AS M where ".$searchValue." ".$orderBy." ".$limitClause;
+        return $this->executeResultQuery($query, null);
+    }
+
+    public function getDiagnosis($searchValue, $orderBy = "", $limit = null, $offset = null)
+    {
+        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit ".$limit.",".$offset;
+        $query = "select `id` as id,`descripcion` as text,`clave` as qty  from `diagnosis` where ".$searchValue." ".$orderBy." ".$limitClause;
         return $this->executeResultQuery($query, null);
     }
     public function getDailyRecords($date)
