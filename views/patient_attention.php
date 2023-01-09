@@ -435,23 +435,21 @@ if ($is_post) {
                                 <!-- Diagnosticos -->
                                 <div class="card mb-3">
                                     <div class="card-header card-header-action" style="padding: 12px 1.25rem;">
-                                        <h5 class="card-title mb-0">Diagnóstico Médico</h5>
+                                        <h5 class="card-title mb-0">Diagnostico Medico</h5>
                                         <div class="d-flex align-items-center card-action-wrap">
-                                            <a class="inline-block collapsed me-2" data-toggle="collapse" href="#collapse_5" aria-expanded="false">
+                                            <a class="inline-block collapsed me-2" data-toggle="collapse" href="#collapse_diagnostico" aria-expanded="false">
                                                 <i class="mdi mdi-chevron-up"></i>
                                             </a>
-                                            <?php if ($existsMedicalHistory) { ?>
-                                                <a class="inline-block badge bg-success" data-toggle="tooltip" data-placement="top" title="Nuevo" style="color: white;" href="/<?= BASE_URL ?>medical-diagnosis/<?= $_GET["patient_id"] ?>">
-                                                    <i class="mdi mdi-24px mdi-plus-circle"></i>
-                                                </a>
-                                            <?php } ?>
+                                            <a class="inline-block badge bg-success" data-toggle="tooltip" data-placement="top" title="Nuevo" style="color: white;" href="/<?= BASE_URL ?>medical-diagnosis/<?= $_GET["patient_id"] ?>">
+                                                <i class="mdi mdi-24px mdi-plus-circle"></i>
+                                            </a>
                                         </div>
                                     </div>
-                                    <div id="collapse_5" class="collapse">
+                                    <div id="collapse_diagnostico" class="collapse">
                                         <div class="card-body p-0">
                                             <div class="table-wrap">
                                                 <div class="table-responsive">
-                                                    <table id="tb_m_module_5" class="table table-striped table-hover table-bordered table-sm mb-0">
+                                                    <table id="tb_module_diagnostico" class="table table-striped table-hover table-bordered table-sm mb-0">
                                                         <thead>
                                                         <tr>
                                                             <th>Fecha</th>
@@ -459,15 +457,13 @@ if ($is_post) {
                                                         </thead>
                                                         <tbody>
                                                         <?php
-                                                        if ($existsMedicalHistory) {
-                                                            $medicalExam = $doctorFunctions->getMedicalDiagnosis($medicalHistoryID, "", " order by `created_at` desc ");
-                                                            while ($r = $medicalExam->fetch_object()) {
-                                                                ?>
-                                                                <tr>
-                                                                    <td><a href="/<?= BASE_URL ?>pdf/medical-diagnosis/<?= urlencode(strrev(base64_encode($r->id))) ?>" data-rid="<?= $r->id ?>" target='_blank'><?= date("d/m/Y", strtotime($r->created_at)) ?></a></td>
-                                                                </tr>
-                                                                <?php
-                                                            }
+                                                        $diagnosticData = $doctorFunctions->getMedicalDiagnosis($patientData->id, "", " order by `created_at` desc ");
+                                                        while ($r = $diagnosticData->fetch_object()) {
+                                                            ?>
+                                                            <tr>
+                                                                <td><a href="/<?= BASE_URL ?>pdf/medical-diagnosis/<?= urlencode(strrev(base64_encode($r->id))) ?>" data-rid="<?= $r->id ?>" target='_blank'><?= date("d/m/Y H:i", strtotime($r->created_at)) ?></a></td>
+                                                            </tr>
+                                                            <?php
                                                         }
                                                         ?>
                                                         </tbody>
@@ -731,7 +727,7 @@ if ($is_post) {
             var dt_m_module_2 = null;
             var dt_m_module_3 = null;
             var dt_m_module_4 = null;
-            var dt_m_module_4 = null;
+
         <?php } ?>
         <?php if ($_SESSION["dep_user_area"] == 3) { ?>
             var dt_o_module_1 = null;
@@ -805,6 +801,7 @@ if ($is_post) {
                         $("#tb_m_module_2 thead").remove();
                         $("#tb_m_module_3 thead").remove();
                         $("#tb_m_module_4 thead").remove();
+
                     }
                 }
                 var tb_m_module_1 = $('#tb_m_module_1');
@@ -815,8 +812,7 @@ if ($is_post) {
                 dt_m_module_3 = tb_m_module_3.DataTable(tbOptions);
                 var tb_m_module_4 = $('#tb_m_module_4');
                 dt_m_module_4 = tb_m_module_4.DataTable(tbOptions);
-                var tb_m_module_5 = $('#tb_m_module_5');
-                dt_m_module_5 = tb_m_module_5.DataTable(tbOptions);
+
 
             <?php } ?>
             <?php if ($_SESSION["dep_user_area"] == 3) { ?>
@@ -873,6 +869,32 @@ if ($is_post) {
                 }
                 var tb_module_recipe = $('#tb_module_recipe');
                 dt_module_recipe = tb_module_recipe.DataTable(tbOptionsRecipe);
+            <?php } ?>
+
+            //Diagnosis
+            <?php if ($_SESSION["dep_user_role"] == "DR") { ?>
+            //ENFERMERÍA
+            var tbOptionsDiagnosis = {
+                responsive: true,
+                autoWidth: false,
+                lengthChange: false,
+                pageLength: 5,
+                info: false,
+                searching: false,
+                columnDefs: [{
+                    targets: [0],
+                    orderable: false
+                }],
+                order: [],
+                language: {
+                    url: "/<?= BASE_URL ?>assets/plugins/datatable-languages/es_es.lang"
+                },
+                drawCallback: function(settings) {
+                    $("#tb_module_diagnostico thead").remove();
+                }
+            }
+            var tb_module_diagnosis = $('#tb_module_diagnostico');
+            dt_module_diagnosis = tb_module_diagnosis.DataTable(tbOptionsDiagnosis);
             <?php } ?>
 
             //DOCUMENTOS

@@ -36,7 +36,7 @@ if ($is_post) {
             $details = json_decode($_POST["diagnosis_details"]);
             foreach ($details as $detail){
 
-                $result= $doctorFunctions->insertDiagnosisDetails($detail->quantity);
+                $result= $doctorFunctions->insertDiagnosisDetails($detail->product);
                // print ($detail->quantity);
             }
            if($result > 0){
@@ -127,6 +127,11 @@ if ($is_post) {
                                             <button id="btn_clear" type="button" class="btn btn-danger mx-1" style="float: right;">Limpiar</button>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                           <label class="cie10"></label>
+                                        </div>
+                                    </div>
                                     <hr />
                                     <div class="row">
                                         <div class="col-12">
@@ -135,7 +140,7 @@ if ($is_post) {
                                                 <tr>
                                                     <th class="d-none d-md-table-cell" style="width: 40%">ID</th>
                                                     <th class="d-none d-md-table-cell">CIE10</th>
-
+                                                    <th class="d-none d-md-table-cell">CIE20</th>
                                                     <th class="text-center">Acciones</th>
                                                 </tr>
                                                 </thead>
@@ -182,6 +187,7 @@ include_once("includes/scripts.php");
         let rowColor = "success";
         $("#tb_details tbody").append(`
                     <tr class="table-` + rowColor + `">
+                        <td class="text-center">` + data.product + `</td>
                         <td class="text-center">` + data.quantity + `</td>
                         <td class="text-center">` + data.productID + `</td>
 
@@ -250,12 +256,12 @@ include_once("includes/scripts.php");
             $("#select_diagnosis option[value=" + data.id + "]").data('text', data.text);
             $("#select_diagnosis").trigger('change');
             $("#select_diagnosis").parent().find("small").text("Código CIE10: " + data.qty);
-           /* let details= {
+           let details= {
                 product: (data.id),
                 productID: (data.qty),
                 quantity: (data.text)
             };
-            addToTable(details);*/
+            addToTable(details);
         });
         $("#btn_clear").on("click", function () {
             clearComponents();
@@ -284,12 +290,13 @@ include_once("includes/scripts.php");
         });
         ///cierre
         $('#create_form').on("submit", function (e) {
-            if ($("#tb_details tbody tr").length >= 0) {
+            if ($("#tb_details tbody tr").length > 0) {
                 let diagnosis_details = [];
                 $("#tb_details tbody tr").each(function () {
                     let details = {
-                        quantity:$(this).find("textarea").val(),
-                        productID: $(this).children("td:eq(1)").text()
+                        product:$(this).children("td:eq(0)").text(),
+                        productID: $(this).children("td:eq(1)").text(),
+                        quantity: $(this).children("td:eq(2)").text(),
 
                     }
                     diagnosis_details.push(details);

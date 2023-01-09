@@ -191,7 +191,7 @@
             //imprimimos en consola si la cedula tiene mas o menos de 10 digitos
             console.log('Esta cedula tiene menos de 10 Digitos');
         }
-    }
+    });
 </script>
 <script>
     $(document).ready(function () {

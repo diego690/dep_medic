@@ -67,14 +67,14 @@ switch ($module) {
         $historyData = null;
         $patientData = null;
         if (!empty($moduleData)) {
-            $historyData = $doctorFunctions->getMedicalHistoryByID($moduleData->medical_id);
+            $historyData = $doctorFunctions->getMedicalHistoryByPatientID($moduleData->medical_id);
             $patientData = $doctorFunctions->getPatientDataByID($historyData->person_id);
             $moduleData = $doctorFunctions->getMedicalDiagnosisByDate($moduleData->id, $moduleData->created_at);
             if ($moduleData->num_rows == 0) {
                 $moduleData = null;
             }
         }
-        _medicalExam($patientData, $moduleData);
+        _medicalDiagnosis($patientData, $moduleData);
         break;
     case "recipe":
         $moduleData = $doctorFunctions->getRecipeByID($moduleDataID);
@@ -689,7 +689,9 @@ function _medicalExam($pt,$dt)
 function _medicalDiagnosis($pt,$dt)
 {
     if (empty($pt) || empty($dt)) {
+        //echo $pt,$dt;
         header("Location: /" . BASE_URL . "home");
+
         exit();
     }
     global $doctorFunctions;
@@ -740,7 +742,7 @@ function _medicalDiagnosis($pt,$dt)
 
 
                 $pdf->SetXY(21.8, 43.5);
-                $pdf->Write(0, date("d/m/Y", strtotime($dt->fecha)));
+                //$pdf->Write(0, date("d/m/y H:i", strtotime($dt->fecha)));
 
                 //DATOS Examen
 
@@ -750,7 +752,9 @@ function _medicalDiagnosis($pt,$dt)
                     $countBoxes = $countBoxes + 1;
                     $coordY = 7.5;
 
-
+                    $pdf->SetMargins(133.1, 0, 17);
+                    $pdf->SetXY(16.1, 50.5 + ($coordY * $count));
+                    $pdf->Write(3, utf8_decode($r->Cie10));
 
                     $pdf->SetMargins(39.1, 0, 81);
                     $pdf->SetXY(39.1, 50.5 + ($coordY * $count));
@@ -758,7 +762,7 @@ function _medicalDiagnosis($pt,$dt)
 
                     $pdf->SetMargins(133.1, 0, 17);
                     $pdf->SetXY(133.1, 50.5 + ($coordY * $count));
-                    $pdf->Write(3, utf8_decode($r->cie10));
+                    $pdf->Write(3, utf8_decode($r->category));
 
                     $count = $count + 1;
                     if ($countBoxes == $limitBoxes) {

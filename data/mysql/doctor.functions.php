@@ -309,7 +309,7 @@ class DoctorFunctions extends \Data\DataHelper
     public function getMedicalExam($medicalHistoryID, $searchValue, $orderBy = "", $limit = null, $offset = null)
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit " . $limit . "," . $offset;
-        $query = "select * from `medical_exams` WHERE `medicalhistory_id`=? " . $searchValue . " " . $orderBy . " " . $limitClause;
+        $query = "select * from `diagnosis_patient` WHERE `medical_id`=? " . $searchValue . " " . $orderBy . " " . $limitClause;
         return $this->executeResultQuery($query, ["s", $medicalHistoryID]);
     }
     public function getMedicalExam2($medicalHistoryID, $searchValue, $orderBy = "", $limit = null, $offset = null)
@@ -322,7 +322,7 @@ class DoctorFunctions extends \Data\DataHelper
     public function getMedicalDiagnosis($medicalHistoryID, $searchValue, $orderBy = "", $limit = null, $offset = null)
     {
         $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit " . $limit . "," . $offset;
-        $query = "select * from `diagnosis_patient` WHERE `medical_id`=? " . $searchValue . " " . $orderBy . " " . $limitClause;
+        $query = "select * from `diagnosis_patient` WHERE `medical_id`= ? " . $searchValue . " " . $orderBy . " " . $limitClause;
         return $this->executeResultQuery($query, ["s", $medicalHistoryID]);
     }
 
@@ -517,12 +517,16 @@ class DoctorFunctions extends \Data\DataHelper
     }
     public function getMedicalExamByDate($medicalhistory_id, $date)
     {
-        $query = "select me.`id` as id, me.`created_at` as fecha, te.`type_exam` as exam, ce.`category` as category from `examen_patients` me inner join `details_exams` de on me.id=de.id_exam inner join `types_exam` te on de.id_type_exam=te.id inner join `category_exam` ce on te.`id_category`=ce.`id` where me.`id`=? and me.`created_at`<=? order by me.`created_at` asc;";
+        $query = "select me.`id` as id, me.`created_at` as fecha, te.`type_exam` as exam, ce.`category` as category 
+from `examen_patients` me inner join `details_exams` de on me.id=de.id_exam inner join `types_exam` te on de.id_type_exam=te.id 
+    inner join `category_exam` ce on te.`id_category`=ce.`id` where me.`id`=? and me.`created_at`<=? order by me.`created_at` asc;";
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
     public function getMedicalDiagnosisByDate($medicalhistory_id, $date)
     {
-        $query = "select dp.`id` as id, dp.`created_at` as fecha, d.`descripcion` as description, d.`clave` as cie10 from `diagnosis_patient` dp inner join `details_diagnosis` dd on dp.`id` = dd.`diagnosis_patient_id` inner join `diagnosis` d on dd.`diagnosis_id` = d.`id` where dp.`id`=? and dp.`created_at`<=? order by dp.`created_at` asc;";
+        $query = "select dp.`id` as id, d.`clave` as Cie10, d.`descripcion` as description, c.descripcion as category
+from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_id
+    inner join diagnosis_patient dp on dp.id=dd.diagnosis_id inner join categorydiagnosis c on d.idCategoria = c.id where dp.`id`=? and dp.`created_at`<=? order by dp.`created_at` asc;";
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
     //DIAGNOSIS
