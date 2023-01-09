@@ -28,18 +28,7 @@ $doctorFunctions = new DoctorFunctions();
         <div class="row-fluid">
             <div class="row-fluid">
                 <div class="span12">
-                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>manage-daily-records';">
-                        <div class="iconimage">
-                            <div class="pd">
-                                <img src="/<?= BASE_URL ?>assets/dist/img/daily-task.png" border="0">
-                            </div>
-                        </div>
-                        <div class="iconname">
-                            <div class="pd">
-                                <h4 class="tituloicon">Registros de pacientes</h4>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-patient';">
                         <div class="iconimage">
                             <div class="pd">
