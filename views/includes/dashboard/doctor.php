@@ -28,7 +28,7 @@ $doctorFunctions = new DoctorFunctions();
         <div class="row-fluid">
             <div class="row-fluid">
                 <div class="span12">
-                    
+
                     <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-patient';">
                         <div class="iconimage">
                             <div class="pd">

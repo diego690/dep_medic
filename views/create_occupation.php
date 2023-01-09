@@ -88,7 +88,7 @@ if ($is_post) {
 
                                         <div class="mb-3 form-group">
                                             <label for="txt_name" class="form-label">Nombre <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="50">
+                                            <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="50" onkeypress="return soloLetras(event)">
                                         </div>
                                         <div class="mb-3 form-group">
                                             <label for="txt_description" class="form-label">Descripción</label>

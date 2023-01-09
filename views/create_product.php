@@ -141,7 +141,7 @@ if ($is_post) {
 
                                         <div class="mb-3 form-group">
                                             <label for="txt_name" class="form-label">Nombre <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="150" required>
+                                            <input type="text" class="form-control" id="txt_name" name="txt_name" maxlength="150" onkeypress="return soloLetras(event)" required>
                                         </div>
                                         <div class="mb-3 form-group">
                                             <label for="txt_description" class="form-label">Descripción</label>
@@ -151,13 +151,13 @@ if ($is_post) {
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_units">Unidades por caja</label>
-                                                    <input type="number" class="form-control" id="txt_units" name="txt_units" min="1" required>
+                                                    <input type="number" class="form-control" id="txt_units" name="txt_units" min="1" onkeypress="return soloNumeros(event)" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_stock">Stock inicial</label>
-                                                    <input type="number" class="form-control" id="txt_stock" name="txt_stock" min="0" required>
+                                                    <input type="number" class="form-control" id="txt_stock" name="txt_stock" min="0" onkeypress="return soloNumeros(event)" required>
                                                 </div>
                                             </div>
                                         </div>
