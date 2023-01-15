@@ -161,7 +161,7 @@ if ($is_post) {
                                                 <div class="col-12 col-md-6">
                                                     <div class="mb-3 form-group">
                                                         <label for="txt_identification" class="form-label">Cédula / Pasaporte <span style="color: red;">*</span></label>
-                                                        <input type="text" class="form-control" id="txt_identification" name="txt_identification" onkeypress="return soloNumeros(event)">
+                                                        <input type="text" class="form-control" id="txt_identification" name="txt_identification" onkeypress="return soloNumeros(event);">
                                                     </div>
                                                 </div>
                                                 <div class="col-12 col-md-6">
@@ -279,7 +279,9 @@ if ($is_post) {
             </div>
         </main>
     </div>
-
+    <?php
+    include_once("includes/scripts.php");
+    ?>
     <script src="/<?= BASE_URL ?>assets/auth-plugins/js/app.js"></script>
     <script src="/<?= BASE_URL ?>assets/plugins/toastr/toastr.min.js"></script>
     <script src="/<?= BASE_URL ?>assets/plugins/bootstrap/js/bootstrap.min.js"></script>

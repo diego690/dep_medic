@@ -69,7 +69,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function createDoc($personID, $name, $url)
     {
-        $query = "insert into `docs` (`person_id`, `name`, `url_doc`) values (?,?,?);";
+        $query = "insert into `docs` (`id`,`person_id`, `name`, `url_doc`) values (UUID(),?,?,?);";
         $params = array(
             'sss', $personID, $name, $url
         );
@@ -181,7 +181,7 @@ class DoctorFunctions extends \Data\DataHelper
             if (in_array(date("N", (strtotime($date))), $days)) {
                 if ((strtotime($init_time) >= strtotime($hours_p->start) && strtotime($init_time) <= strtotime($hours_p->end)) || (strtotime($init_time) >= strtotime($hours_t->start) && strtotime($init_time) <= strtotime($hours_t->end))) {
                     if (!$this->existsConfirmedAppointmentWithSameDateTime($date, $init_time)) {
-                        $query = "insert into `turn` (`area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (?,?,?,?,?,?,?,?,?);";
+                        $query = "insert into `turn` (`id`,`area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?);";
                         $params = array(
                             'sssssssss', $areaID, $personID, $date, $init_time, $end_time, $status, $type, $description, $_SESSION["dep_user_id"]
                         );
@@ -358,7 +358,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertNursingData($turnID, $personID, $weight, $pressure, $temperature, $heartFrequency, $oxygen, $height, $breathingFrequency, $imc)
     {
-        $query = "insert into `nursing_data` (`turn_id`, `person_id`, `weight`, `pressure`,`temperature`,`heart_frequency`,`oxygen`,`height`,`breathing_frequency`,`imc`,`created_by`) values (?,?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `nursing_data` (`id`,`turn_id`, `person_id`, `weight`, `pressure`,`temperature`,`heart_frequency`,`oxygen`,`height`,`breathing_frequency`,`imc`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?,?);";
         $params = array(
             'ssdddddddds', $turnID, $personID, $weight, $pressure, $temperature, $heartFrequency, $oxygen, $height, $breathingFrequency, $imc, $_SESSION["dep_user_id"]
         );
@@ -425,7 +425,7 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalHistory($personID, $app, $apf, $ago, $allergies, $habits, $pressure, $heartFrequency, $weight, $height, $imc)
     {
-        $query = "insert into `medical_history` (`person_id`, `app`, `apf`, `ago`,`allergies`,`habits`,`pressure`,`heart_frequency`,`weight`,`height`,`imc`,`updated_by`) values (?,?,?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `medical_history` (`id`,`person_id`, `app`, `apf`, `ago`,`allergies`,`habits`,`pressure`,`heart_frequency`,`weight`,`height`,`imc`,`updated_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?,?,?);";
         $params = array(
             'ssssssddddds', $personID, $app, $apf, $ago, $allergies, $habits, $pressure, $heartFrequency, $weight, $height, $imc, $_SESSION["dep_user_id"]
         );
@@ -447,9 +447,9 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalConsultation($historyID, $turnID, $reason, $headNeck, $thorax, $abdomen, $extremities, $diagnostic, $treatment)
     {
-        $query = "insert into `medical_consultation` (`medicalhistory_id`,`turn_id`, `reason`, `head_neck`, `thorax`,`abdomen`,`extremities`,`diagnostic`,`treatment`,`created_by`) values (?,?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `medical_consultation` (`id`,`medicalhistory_id`,`turn_id`, `reason`, `head_neck`, `thorax`,`abdomen`,`extremities`,`diagnostic`,`treatment`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?,?);";
         $params = array(
-            'ssssssssss', $historyID, $turnID, $reason, $headNeck, $thorax, $abdomen, $extremities, $diagnostic, $treatment, $_SESSION["dep_user_id"]
+            'sssssssssss', $historyID, $turnID, $reason, $headNeck, $thorax, $abdomen, $extremities, $diagnostic, $treatment, $_SESSION["dep_user_id"]
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -470,9 +470,9 @@ class DoctorFunctions extends \Data\DataHelper
 
     public function insertMedicalEvolve($historyID, $date, $evolve_notes, $prescription)
     {
-        $query = "insert into `medical_evolve` (`medicalhistory_id`,`date`, `evolve_notes`, `prescription`) values (?,?,?,?);";
+        $query = "insert into `medical_evolve` (`id`,`medicalhistory_id`,`date`, `evolve_notes`, `prescription`) values (UUID(),?,?,?,?);";
         $params = array(
-            'ssss', $historyID, $date, $evolve_notes, $prescription
+            'ssss',  $historyID, $date, $evolve_notes, $prescription
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -517,8 +517,8 @@ class DoctorFunctions extends \Data\DataHelper
     }
     public function getMedicalExamByDate($medicalhistory_id, $date)
     {
-        $query = "select me.`id` as id, me.`created_at` as fecha, te.`type_exam` as exam, ce.`category` as category 
-from `examen_patients` me inner join `details_exams` de on me.id=de.id_exam inner join `types_exam` te on de.id_type_exam=te.id 
+        $query = "select me.`id` as id, me.`created_at` as fecha, te.`type_exam` as exam, ce.`category` as category
+from `examen_patients` me inner join `details_exams` de on me.id=de.exam_id inner join `types_exam` te on de.id_type_exam=te.id
     inner join `category_exam` ce on te.`id_category`=ce.`id` where me.`id`=? and me.`created_at`<=? order by me.`created_at` asc;";
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
@@ -530,14 +530,18 @@ from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_
         return $this->executeResultQuery($query, ['ss', $medicalhistory_id, $date]);
     }
     //DIAGNOSIS
-    public function insertDiagnosis($personID){
-        $query = "insert into `diagnosis_patient` (`medical_id`,`created_by`) values (?,?);";
-        $params = array('ss',$personID,$_SESSION["dep_user_id"]);
+    public function insertDiagnosis($id,$personID){
+        $query = "insert into `diagnosis_patient` (`id`,`medical_id`,`created_by`) values (?,?,?);";
+        $params = array('sss',$id,$personID,$_SESSION["dep_user_id"]);
         return $this->executeInsertQuery($query,$params);
     }
-    public function insertDiagnosisDetails($diag_patient_id){
-       $query = "call sp_insert_detail_diagnosis('".$diag_patient_id."');";
-        return $this->executeResultQuery($query,null);
+    public function insertDiagnosisDetails($personID,$diag_patient_id){
+       //$query = "call sp_insert_detail_diagnosis('".$diag_patient_id."');";
+        $query = "insert into `details_diagnosis` (`id`, `diagnosis_id`, `diagnosis_patient_id`) values (UUID(),?,?);";
+        $params = array(
+            'si', $personID,$diag_patient_id
+        );
+        return $this->executeInsertQuery($query,$params);
     }
 
     public function getNumDiagnosis(){
@@ -547,23 +551,25 @@ from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_
 
     // RECIPE
 
-    public function insertRecipe($id, $personID)
+    public function insertRecipe($id,$personID)
     {
-        $query = "insert into `recipes` (`person_id`, `created_by`) values (?,?);";
+        $query = "insert into `recipes` (`id`,`person_id`, `created_by`) values (?,?,?);";
         $params = array(
-            'ss', $personID, $_SESSION["dep_user_id"]
+            'sss',$id, $personID, $_SESSION["dep_user_id"]
         );
 
         return $this->executeInsertQuery($query, $params);
     }
 
-    public function insertRecipeDetails($recipeID, $product, $quantity, $indications, $kit_quantity)
+    public function insertRecipeDetails($recipeID,$product, $quantity, $indications, $kit_quantity)
     {
-        $query = "insert into `recipe_details` (`recipe_id`, `product`, `quantity`, `indications`, `kit_quantity`) values (?,?,?,?,?);";
+        //$max = "select count(*) from `recipes`;";
+        //$recipeID = $this->executeResultQuery($max,null);
+        $query = "insert into `recipe_details` (`id`, `recipe_id`, `product`, `quantity`, `indications`, `kit_quantity`) values (UUID(),?,?,?,?,?);";
         $params = array(
             'ssisi', $recipeID, $product, $quantity, $indications, $kit_quantity
         );
-
+        //$query = "call sp_insert_detail_recipes('".$product."','".$quantity."','".$indications."','".$kit_quantity."');";
         return $this->executeInsertQuery($query, $params);
     }
 
@@ -608,9 +614,9 @@ from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_
 
     public function createProduct($id, $name, $image, $units, $description)
     {
-        $query = "insert into `products` (`name`, `image`, `units`, `description`) values (?,?,?,?);";
+        $query = "insert into `products` (`name`, `image`, `units`, `description`,`product_id`) values (?,?,?,?,?);";
         $params = array(
-            'ssis', $name, $image, $units, $description
+            'ssiss', $name, $image, $units, $description,$id
         );
 
         return $this->executeInsertQuery($query, $params);
@@ -753,19 +759,22 @@ from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_
 
     // MEDICAL EXAM
 
-    public function insertMedicalExam($historyID, $date)
+    public function insertMedicalExam($id,$historyID, $date)
     {
-        $query = "insert into `examen_patients`(`medical_id`,`created_at`) values (?,?);";
+        $query = "insert into `examen_patients`(`id`,`medical_id`,`date`,`created_by`) values (?,?,?,?);";
         $params = array(
-            'ss', $historyID, $date
+            'ssss',$id, $historyID, $date, $_SESSION["dep_user_id"]
         );
         return $this->executeInsertQuery($query,$params);
     }
-    public function insertDetailsExam($exam_type)
+    public function insertDetailsExam($exam_id,$exam_type)
     {
-        $query = "call sp_insert_details('".$exam_type."');";
-
-        return $this->executeResultQuery($query,null);
+        //$query = "call sp_insert_details('".$exam_type."');";
+        $query="insert into `details_exams`(`id`,`exam_id`,`id_type_exam`) values (UUID(),?,?);";
+        $params = array(
+            'si',$exam_id,$exam_type
+        );
+        return $this->executeResultQuery($query,$params);
     }
 
     public function getMedicines($searchValue, $orderBy = "", $limit = null, $offset = null)

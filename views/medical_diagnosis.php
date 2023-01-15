@@ -30,13 +30,13 @@ if ($is_post) {
     $_SESSION['post_id'] = $_POST['post_id'];
     $isCreated = false;
     $uuid = gen_uuid();
-    $result = $doctorFunctions->insertDiagnosis($patientID);
+    $result = $doctorFunctions->insertDiagnosis($uuid,$patientID);
     if($result>0){
 
             $details = json_decode($_POST["diagnosis_details"]);
             foreach ($details as $detail){
 
-                $result= $doctorFunctions->insertDiagnosisDetails($detail->product);
+                $result= $doctorFunctions->insertDiagnosisDetails($uuid,$detail->product);
                // print ($detail->quantity);
             }
            if($result > 0){

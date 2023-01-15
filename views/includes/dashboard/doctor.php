@@ -29,6 +29,19 @@ $doctorFunctions = new DoctorFunctions();
             <div class="row-fluid">
                 <div class="span12">
 
+                    <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-product';">
+                        <div class="iconimage">
+                            <div class="pd">
+                                <img src="/<?= BASE_URL ?>assets/dist/img/medicine.png" border="0">
+                            </div>
+                        </div>
+                        <div class="iconname">
+                            <div class="pd">
+                                <h4 class="tituloicon">Registrar Productos</h4>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-patient';">
                         <div class="iconimage">
                             <div class="pd">
@@ -80,6 +93,7 @@ $doctorFunctions = new DoctorFunctions();
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

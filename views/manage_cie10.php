@@ -34,33 +34,7 @@ if ($is_post) {
         $doctorFunctions->updateMeetLinkByAreaID($area, trim($_POST["txt_meet_link"]));
         $settingsData = $doctorFunctions->getSettingsByAreaID($area);
         $updateResult = true;
-        if (ENABLE_EMAIL_SENDING) {
-            try {
-                $persons = $doctorFunctions->getPatientsInvolvedInAppointmentsByAreaID($area);
-                $sendTo_arr = array();
-                while ($r = $persons->fetch_object()) {
-                    if (!empty($r->patient_email)) {
-                        $sendTo_arr[$r->patient_email] = $r->patient_name . " " . $r->patient_lastname;
-                    }
-                }
-                if (!empty($sendTo_arr) && !empty(trim($_POST["txt_meet_link"]))) {
-                    MailSender::send_mail(
-                        "Dpto. Médico UTEQ",
-                        $sendTo_arr,
-                        "Notificación sobre cita por telemedicina",
-                        "Ha sido modificado el enlace para acceder a la cita por telemedicina en la área escogida, el nuevo enlace es: <a href='" . $_POST["txt_meet_link"] . "'>" . $_POST["txt_meet_link"] . "</a>.
-                        <br/><br/>
-                        No responder a este correo.<br/>
-                        Para mayor información contactarse a:<br/>
-                        <strong>Departamento médico:</strong> medicos@uteq.edu.ec<br/>
-                        <strong>Enfermería:</strong> Lcda. Gabriela Alvarez Ayala - galvareza@uteq.edu.ec<br/>
-                        <strong>Medicina General:</strong> Dra. Miryam Loor Intriago - mloor@uteq.edu.ec<br/>
-                        <strong>Odontología:</strong> Odontólogo. Cristhian Solano Chichande - csolano@uteq.edu.ec"
-                    );
-                }
-            } catch (\Throwable $th) {
-            }
-        }
+
     }
 
     if ($updateResult) {
@@ -151,6 +125,12 @@ if ($is_post) {
 
                                         </form>
 
+                                    </div>
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">Busqueda Codigo Cie10</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <iframe id="frame" width="560" height="315" src="https://cpockets.com/cie10" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
 

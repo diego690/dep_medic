@@ -3,7 +3,8 @@
 define('DB_HOST','localhost');
 define('DB_USER','root');
 define('DB_PASS','123456');
-define('DB_NAME','dep_medico');
+define('DB_NAME','medicouteq');
+//define('DB_NAME','dep_medico');
 define('DB_CHARSET','utf8mb4');
 
 //APP SETTINGS

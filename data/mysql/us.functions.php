@@ -46,7 +46,7 @@ class UsFunctions extends \Data\DataHelper
 
     public function insertFamiliarRequest($requestID, $userID, $type, $kin, $personID = null)
     {
-        $query = "insert into `familiar_requests` (`id`,`user_id`, `type`, `kin`, `person_id`) values (?,?,?,?,?);";
+        $query = "insert into `familiar_requests` (`id`, `user_id`, `type`, `kin`, `person_id`) values (?,?,?,?,?);";
         $params = array(
             'sssss', $requestID, $userID, $type, $kin, $personID
         );
@@ -164,7 +164,7 @@ class UsFunctions extends \Data\DataHelper
         $duration = $this->executeResultQuery($query, ['s', $areaID])->fetch_object()->duration;
         $end_time = date("G:i:s", (strtotime($init_time) + $duration));
 
-        $query = "insert into `turn` (`area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (?,?,?,?,?,?,?,?,?);";
+        $query = "insert into `turn` (`id`, `area_id`, `person_id`, `date`, `init_time`, `end_time`, `status`, `type`, `description`,`created_by`) values (UUID(),?,?,?,?,?,?,?,?,?);";
         $params = array(
             'sssssssss', $areaID, $personID, $date, $init_time, $end_time, $status, $type, $description, $_SESSION["dep_user_id"]
         );
@@ -184,15 +184,6 @@ class UsFunctions extends \Data\DataHelper
         $query = "select T.`id`, A.`name` 'area', CONCAT(A.`name`,', Campus ',A.`campus`) 'full_area', P.`identification`, CONCAT(P.`name`,' ',P.`last_name`) 'fullname', T.`date`, T.`init_time` 'time', T.`status`, T.`type`, T.`description`, T.`created_at` from `turn` T inner join `areas` A on T.`area_id`=A.`id` inner join `persons` P on T.`person_id`=P.`id` where (T.`created_by`=? or T.`person_id`=?) and (T.`status`='CR' or T.`status`='CO') " . $searchValue . " " . $orderBy . " " . $limitClause;
         return $this->executeResultQuery($query, ["ss", $_SESSION["dep_user_id"], $personID]);
     }
-    public function getMyRecipeRequests($orderBy = "", $limit = null, $offset = null)
-    {
-        $personID = $this->getMyPersonID();
-        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit " . $limit . "," . $offset;
-        $query = "SELECT re.`id` as id, re.`created_at` as date, rd.`product` as product, rd.`quantity` as quantity, "
-                . "rd.`indications` as indications FROM `recipes` re INNER JOIN `recipe_details` rd "
-                . "on re.`id`=rd.`recipe_id` where re.`person_id`=?";
-        return $this->executeResultQuery($query, ["s", $personID]);
-    }
 
     public function getAppointmentRequestByID($requestID)
     {
@@ -205,5 +196,14 @@ class UsFunctions extends \Data\DataHelper
         $query = "delete from `turn` where `id`=? and `status`='CR';";
         $params = array('s', $requestID);
         return $this->executeNonQuery($query, $params);
+    }
+    public function getMyRecipeRequests($orderBy = "", $limit = null, $offset = null)
+    {
+        $personID = $this->getMyPersonID();
+        $limitClause = (is_null($limit) || is_null($offset)) ? "" : " limit " . $limit . "," . $offset;
+        $query = "SELECT re.`id` as id, re.`created_at` as date, rd.`product` as product, rd.`quantity` as quantity, "
+            . "rd.`indications` as indications FROM `recipes` re INNER JOIN `recipe_details` rd "
+            . "on re.`id`=rd.`recipe_id` where re.`person_id`=?";
+        return $this->executeResultQuery($query, ["s", $personID]);
     }
 }

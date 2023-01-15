@@ -53,7 +53,7 @@ switch ($module) {
         $historyData = null;
         $patientData = null;
         if (!empty($moduleData)) {
-            $historyData = $doctorFunctions->getMedicalHistoryByID($moduleData->medical_id);
+            $historyData = $doctorFunctions->getMedicalHistoryByPatientID($moduleData->medical_id);
             $patientData = $doctorFunctions->getPatientDataByID($historyData->person_id);
             $moduleData = $doctorFunctions->getMedicalExamByDate($moduleData->id, $moduleData->created_at);
             if ($moduleData->num_rows == 0) {
@@ -627,11 +627,11 @@ function _medicalExam($pt,$dt)
 
                 $pdf->SetFontSize(9);
 
-                $pdf->SetXY(30.8, 30.5);
+                $pdf->SetXY(25.8, 30.5);
                 $pdf->Write(0, utf8_decode($apellidos[0]));
-                $pdf->SetXY(32, 30.5);
+                $pdf->SetXY(40, 30.5);
                 $pdf->Write(0, (isset($apellidos[1])) ? utf8_decode($apellidos[1]) : "");
-                $pdf->SetXY(44.7, 30.5);
+                $pdf->SetXY(50.7, 30.5);
                 $pdf->Write(0, utf8_decode($pt->name));
                 $pdf->SetXY(16.6, 20.5);
                 $pdf->Write(0,"Identificacion: ");

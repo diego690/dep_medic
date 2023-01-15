@@ -14,7 +14,13 @@ if (empty($patientData)) {
     header("Location: /" . BASE_URL . "manage-patients");
     exit();
 }
-
+$historyID = $doctorFunctions->getMedicalHistoryByPatientID($patientID);
+if (empty($historyID)) {
+    header("Location: /" . BASE_URL . "manage-patients");
+    exit();
+} else {
+    $historyID = $historyID->id;
+}
 $area = $doctorFunctions->getMyArea();
 $msg_response = array(
     "errors" => array(),
@@ -29,24 +35,25 @@ $is_post = (count($_POST) > 0) && ($post_validation_session != $post_validation_
 if ($is_post) {
     $_SESSION['post_id'] = $_POST['post_id'];
 
-    $isCreated = false;
+  $isCreated = false;
     $uuid = gen_uuid();
-    $result = $doctorFunctions->insertRecipe($uuid, $patientID);
+    $result = $doctorFunctions->insertRecipe($uuid,$patientID);
     if ($result > 0) {
         try {
             $details = json_decode($_POST["recipe_details"]);
             foreach ($details as $detail) {
-                $result = $doctorFunctions->insertRecipeDetails($uuid, $detail->product, $detail->quantity, $detail->indications, $detail->kit_quantity);
-                $doctorFunctions->decreaseProductStockByID($detail->product, $detail->kit_quantity);
+                $result = $doctorFunctions->insertRecipeDetails($uuid,$detail->product, $detail->quantity, $detail->indications, $detail->kit_quantity);
+               $doctorFunctions->decreaseProductStockByID($detail->productID, $detail->kit_quantity);
+                //echo $detail->product, $detail->quantity, $detail->indications, $detail->kit_quantity,$detail->productID;
             }
 
             if ($result > 0) {
                 $isCreated = true;
-            } else {
+           } else {
                 $doctorFunctions->deleteRecipe($uuid);
             }
         } catch (\Throwable $th) {
-            $doctorFunctions->deleteRecipe($uuid);
+           $doctorFunctions->deleteRecipe($uuid);
         }
     }
 
@@ -175,6 +182,7 @@ if ($is_post) {
                                             <table id="tb_details" class="table">
                                                 <thead>
                                                 <tr>
+                                                    <th style="width: 30%;" hidden="">ID</th>
                                                     <th style="width: 30%;">Producto</th>
                                                     <th class="d-none d-md-table-cell" style="width: 40%">Indicaciones</th>
                                                     <th style="width: 10%">Cantidad</th>
@@ -232,10 +240,12 @@ include_once("includes/scripts.php");
         }
         $("#tb_details tbody").append(`
                     <tr class="table-` + rowColor + `">
+
                         <td><textarea style="display: none;">` + data.productID + `</textarea>` + data.product + `</td>
                         <td class="d-none d-md-table-cell">` + data.indications + `</td>
                         <td class="text-center">` + data.quantity + `</td>
                         <td class="text-center">` + data.kit_quantity + `</td>
+                        <td class="text-center" style="display: none">` + data.product + `</td>
                         <td class="table-action">
                             <center><a href="javascript:;" class="text-danger" onclick="removeRow(this);"><i class="fa fa-trash"></i></a></center>
                         </td>
@@ -357,7 +367,7 @@ include_once("includes/scripts.php");
             let details = {
                 type: $("#select_product_type").val(),
                 product: ($("#select_product_type").val() == "1") ? $("#select_product option:selected").text() : $.trim($("#select_product2 option:selected").text()),
-                productID: ($("#select_product_type").val() == "1") ? $("#select_product").val() : $.trim($("#select_product2 option:selected").text()),
+                productID: ($("#select_product_type").val() == "1") ? $("#select_product").val() : $.trim($("#select_product2 option:selected").val()),
                 quantity: ($("#txt_quantity").val() == "") ? 0 : parseInt($("#txt_quantity").val()),
                 kit_quantity: ($("#txt_kit_quantity").val() == "") ? 0 : parseInt($("#txt_kit_quantity").val()),
                 indications: $("#txt_indications").val()
@@ -399,10 +409,11 @@ include_once("includes/scripts.php");
                 let recipe_details = [];
                 $("#tb_details tbody tr").each(function () {
                     let details = {
-                        product: $(this).find("textarea").val(),
+                        productID: $(this).find("textarea").val(),
                         indications: $(this).children("td:eq(1)").text(),
                         quantity: $(this).children("td:eq(2)").text(),
-                        kit_quantity: $(this).children("td:eq(3)").text()
+                        kit_quantity: $(this).children("td:eq(3)").text(),
+                        product: $(this).children("td:eq(4)").text()
                     }
                     recipe_details.push(details);
                 });

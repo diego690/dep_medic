@@ -38,22 +38,23 @@ if ($is_post) {
     $result = null;
     $isCreated = false;
     $date = date("Y-m-d", strtotime($_POST["txt_date"]));
-
+    $uuid = gen_uuid();
         $insertar = $_POST['select_exam'];
         $i = sizeof($_POST['select_exam']);
         //echo sizeof($_POST['select_exam']);
         //$user_id = $_POST['select_pacientesDoc'];
-        $result = $doctorFunctions->insertMedicalExam($historyID, $date);
+        $result = $doctorFunctions->insertMedicalExam($uuid,$patientID, $date);
+        if($result>0) {
+            for ($if = 0; $if < $i; $if++) {
+                $result = $doctorFunctions->insertDetailsExam($uuid,$insertar[$if]);
+                $isCreated = true;
+            }
 
-        for($if = 0; $if < $i; $if++) {
-            $result = $doctorFunctions->insertDetailsExam( $insertar[$if]);
-            $isCreated=true;
+            /*$result = $doctorFunctions->insertMedicalEvolve($historyID, $date, $_POST["txt_evolve_notes"], $_POST["txt_prescription"]);*/
+            if ($result > 0) {
+                $isCreated = true;
+            }
         }
-
-    /*$result = $doctorFunctions->insertMedicalEvolve($historyID, $date, $_POST["txt_evolve_notes"], $_POST["txt_prescription"]);*/
-    if ($result > 0) {
-        $isCreated = true;
-    }
 
     if ($isCreated) {
         ?>
