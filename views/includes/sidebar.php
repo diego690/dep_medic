@@ -88,7 +88,7 @@ if (in_array($_SESSION["dep_user_role"], ["AD", "DR"])) {
                             <i class="align-middle" data-feather="clock"></i> <span class="align-middle">Citas</span>
                         </a>
                         <ul id="mnugrp_appointments" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <?php if (in_array($_SESSION["dep_user_area"], [2, 3])) { ?>
+                            <?php if (in_array($_SESSION["dep_user_area"], [1, 2, 3])) { ?>
                                 <li id="mnu_appointments_create" class="sidebar-item"><a class="sidebar-link" href="/<?= BASE_URL ?>create-appointment">Registrar Cita</a></li>
                             <?php } ?>
                             <li id="mnu_appointments_manage" class="sidebar-item"><a class="sidebar-link" href="/<?= BASE_URL ?>manage-appointments">Ver Citas</a></li>

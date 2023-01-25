@@ -66,7 +66,7 @@ $doctorFunctions = new DoctorFunctions();
                             </div>
                         </div>
                     </div>
-                    <?php if (in_array($_SESSION["dep_user_area"], [2, 3])) { ?>
+                    <?php if (in_array($_SESSION["dep_user_area"], [1,2, 3,4])) { ?>
                     <div class="icon" onclick="window.location.href = '/<?= BASE_URL ?>create-appointment';">
                         <div class="iconimage">
                             <div class="pd">

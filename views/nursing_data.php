@@ -42,6 +42,7 @@ if ($is_post) {
     }
     $result = $doctorFunctions->insertNursingData($turnID, $patientID, $_POST["txt_weight"], $_POST["txt_pressure"], $_POST["txt_temperature"], $_POST["txt_heart_frequency"], $_POST["txt_oxygen"], $_POST["txt_height"], $_POST["txt_breathing_frequency"], $_POST["txt_imc"]);
     if ($result > 0) {
+        $result = $doctorFunctions->insertMedicalHistory_by_nursing($patientID, $_POST["txt_pressure"], $_POST["txt_heart_frequency"], $_POST["txt_weight"], $_POST["txt_height"], $_POST["txt_imc"]);
         $isCreated = true;
     }
 

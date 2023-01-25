@@ -886,7 +886,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "get_familiar_requests":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1 || $_SESSION["dep_user_area"] == 4) {
                 //Read values
                 $draw = $_POST["draw"];
                 $row = $_POST["start"];
@@ -961,7 +961,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "accept_familiar_request":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1 || $_SESSION["dep_user_area"] == 4) {
                 if (isset($_POST["request_id"])) {
                     $requestID = base64_decode(strrev(urldecode($_POST["request_id"])));
                     $fr = $usFunctions->getFamiliarRequestByID($requestID);
@@ -1034,7 +1034,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "decline_familiar_request":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && $_SESSION["dep_user_area"] == 1 || $_SESSION["dep_user_area"] == 4) {
                 if (isset($_POST["request_id"])) {
                     $requestID = base64_decode(strrev(urldecode($_POST["request_id"])));
                     $request = $usFunctions->getFamiliarRequestByID($requestID);
@@ -1164,7 +1164,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "cancel_appointment":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 if (isset($_POST["appointment_id"])) {
                     $appointment = $doctorFunctions->getAppointmentByID($_POST["appointment_id"]);
                     if ($appointment->num_rows > 0) {
@@ -1210,7 +1210,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "get_appointment_requests":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 $doctorFunctions->deleteExpiredCreatedAppointments();
                 //Read values
                 $draw = $_POST["draw"];
@@ -1281,7 +1281,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "accept_appointment_request":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 if (isset($_POST["request_id"])) {
                     $requestID = base64_decode(strrev(urldecode($_POST["request_id"])));
                     $request = $usFunctions->getAppointmentRequestByID($requestID);
@@ -1337,7 +1337,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "decline_appointment_request":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 if (isset($_POST["request_id"])) {
                     $requestID = base64_decode(strrev(urldecode($_POST["request_id"])));
                     $request = $usFunctions->getAppointmentRequestByID($requestID);
@@ -1409,7 +1409,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "create_appointment":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 if (isset($_POST["patient_id"]) && isset($_POST["date"]) && isset($_POST["type"]) && isset($_POST["description"])) {
                     $isCreated = false;
                     $areaID = $doctorFunctions->getMyArea();
@@ -1473,7 +1473,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "get_appointments":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [1, 2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 $doctorFunctions->updateConfirmedAppointmentsToAttended();
                 $doctorFunctions->updateConfirmedAppointmentsToNoAttended();
                 $areaID = $doctorFunctions->getMyArea();
@@ -1549,7 +1549,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "save_appointment_to_session":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [1, 2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 if (isset($_POST["appointment_id"])) {
                     $result->status = 200;
                     unset($result->error);
@@ -1560,7 +1560,7 @@ if (isset($_POST["action"])) {
             }
             break;
         case "get_products":
-            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [1, 2, 3])) {
+            if (isset($_SESSION["dep_user_role"]) && $_SESSION["dep_user_role"] == "DR" && in_array($_SESSION["dep_user_area"], [2, 3]) || in_array($_SESSION["dep_user_area"], [1, 4])) {
                 //Read values
                 $draw = $_POST["draw"];
                 $row = $_POST["start"];

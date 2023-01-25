@@ -432,6 +432,15 @@ class DoctorFunctions extends \Data\DataHelper
 
         return $this->executeInsertQuery($query, $params);
     }
+    public function insertMedicalHistory_by_nursing($personID, $pressure, $heartFrequency, $weight, $height, $imc)
+    {
+        $query = "insert into `medical_history` (`id`,`person_id`,`pressure`,`heart_frequency`,`weight`,`height`,`imc`,`updated_by`) values (UUID(),?,?,?,?,?,?,?);";
+        $params = array(
+            'sddddds', $personID, $pressure, $heartFrequency, $weight, $height, $imc, $_SESSION["dep_user_id"]
+        );
+
+        return $this->executeInsertQuery($query, $params);
+    }
 
     public function updateMedicalHistory($personID, $app, $apf, $ago, $allergies, $habits, $pressure, $heartFrequency, $weight, $height, $imc)
     {
@@ -804,5 +813,14 @@ from diagnosis d inner join details_diagnosis dd on d.id = dd.diagnosis_patient_
         WHERE dp.`created_at` <=? order by dp.`created_at` asc;";
         
         return $this->executeResultQuery($query, ['s', $date]);
+    }
+
+    public function ins_area(){
+        $area_id="5f583780-d850-4f33-87de-14c099e0dbec";
+        $query = "insert into `schedule_settings`(`id`,`area_id`) values (UUID(),?);";
+        $params= array(
+            's',$area_id
+        );
+        return $this->executeInsertQuery($query,$params);
     }
 }

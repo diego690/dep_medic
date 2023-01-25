@@ -4,7 +4,7 @@ require_once(__DIR__ . "/../system/security/session.php");
 require_once(__DIR__ . "/../data/mysql/doctor.functions.php");
 
 $doctorFunctions = new DoctorFunctions();
-if ($_SESSION["dep_user_role"] != "DR" || $_SESSION["dep_user_area"] != 1) {
+if ($_SESSION["dep_user_role"] != "DR" ) {
     header("Location: /" . BASE_URL . "home");
     exit();
 }

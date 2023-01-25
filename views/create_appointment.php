@@ -6,7 +6,7 @@ require_once(__DIR__ . "/../data/mysql/us.functions.php");
 
 $doctorFunctions = new DoctorFunctions();
 $usFunctions = new UsFunctions();
-if ($_SESSION["dep_user_role"] != "DR" || !in_array($_SESSION["dep_user_area"], [2, 3])) {
+if ($_SESSION["dep_user_role"] != "DR") {
     header("Location: /" . BASE_URL . "home");
     exit();
 }
