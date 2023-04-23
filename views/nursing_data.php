@@ -127,7 +127,7 @@ if ($is_post) {
                                             <div class="col-6">
                                                 <div class="mb-3 form-group">
                                                     <label for="txt_pressure" class="form-label">Presión <span style="color: red;">*</span></label>
-                                                    <input type="number" class="form-control" id="txt_pressure" name="txt_pressure" maxlength="20">
+                                                    <input type="text" class="form-control" id="txt_pressure" name="txt_pressure" maxlength="20">
                                                 </div>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@ if ($is_post) {
                 }
             } ?>
 
-            $("#txt_height, #txt_weight, #txt_temperature, #txt_pressure, #txt_breathing_frequency, #txt_heart_frequency, #txt_oxygen").on("input", function(evt) {
+            $("#txt_height, #txt_weight, #txt_temperature, #txt_breathing_frequency, #txt_heart_frequency, #txt_oxygen").on("input", function(evt) {
                 if (evt.originalEvent.data !== ".") {
                     this.value = this.value.replace(/[^0-9.]/g, '');
                 }

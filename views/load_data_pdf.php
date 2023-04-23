@@ -631,7 +631,7 @@ function _medicalExam($pt,$dt)
                 $pdf->Write(0, utf8_decode($apellidos[0]));
                 $pdf->SetXY(40, 30.5);
                 $pdf->Write(0, (isset($apellidos[1])) ? utf8_decode($apellidos[1]) : "");
-                $pdf->SetXY(50.7, 30.5);
+                $pdf->SetXY(58.7, 30.5);
                 $pdf->Write(0, utf8_decode($pt->name));
                 $pdf->SetXY(16.6, 20.5);
                 $pdf->Write(0,"Identificacion: ");
